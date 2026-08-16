@@ -1,1 +1,28 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>My New Hugo Project – Docs</title><link>https://omnagdaa.github.io/docs/</link><description>Recent content in Docs on My New Hugo Project</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 16 Aug 2026 03:37:00 +0530</lastBuildDate><atom:link href="https://omnagdaa.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Memory Forensics</title><link>https://omnagdaa.github.io/docs/memory-forensics/</link><pubDate>Sun, 16 Aug 2026 03:37:00 +0530</pubDate><guid>https://omnagdaa.github.io/docs/memory-forensics/</guid><description/></item><item><title>Mobile Security</title><link>https://omnagdaa.github.io/docs/mobile-security/</link><pubDate>Sun, 16 Aug 2026 03:37:00 +0530</pubDate><guid>https://omnagdaa.github.io/docs/mobile-security/</guid><description/></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>My New Hugo Project – Docs</title><link>https://omnagdaa.github.io/docs/</link><description>Recent content in Docs on My New Hugo Project</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 16 Aug 2026 03:37:00 +0530</lastBuildDate><atom:link href="https://omnagdaa.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>DumpScope</title><link>https://omnagdaa.github.io/docs/projects/dumpscope/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://omnagdaa.github.io/docs/projects/dumpscope/</guid><description>
+&lt;p&gt;DumpScope is a memory forensics desktop application built with Python, PyQt6, and Volatility3 — designed to streamline memory dump analysis with a wizard-driven UI instead of raw CLI commands.&lt;/p&gt;
+&lt;h2&gt;Features&lt;span class="hx:absolute hx:-mt-20" id="features"&gt;&lt;/span&gt;
+&lt;a href="#features" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Wizard UI walking through case setup to analysis&lt;/li&gt;
+&lt;li&gt;Plugin ribbon for running Volatility3 plugins without memorizing syntax&lt;/li&gt;
+&lt;li&gt;QThread-based workers keep the UI responsive during long-running analysis&lt;/li&gt;
+&lt;li&gt;SQLite case storage — save and reopen investigations&lt;/li&gt;
+&lt;li&gt;Automatic OS detection from the memory image&lt;/li&gt;
+&lt;li&gt;Process dumping directly from the UI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Screenshots&lt;span class="hx:absolute hx:-mt-20" id="screenshots"&gt;&lt;/span&gt;
+&lt;a href="#screenshots" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;figure&gt;&lt;img src="https://omnagdaa.github.io/docs/projects/dumpscope/start.png"
+alt="DumpScope wizard UI"&gt;&lt;figcaption&gt;
+&lt;p&gt;Case setup wizard&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;&lt;img src="https://omnagdaa.github.io/docs/projects/dumpscope/dashboard.png"
+alt="Plugin ribbon"&gt;&lt;figcaption&gt;
+&lt;p&gt;Running Volatility3 plugins via the ribbon&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2&gt;Demo&lt;span class="hx:absolute hx:-mt-20" id="demo"&gt;&lt;/span&gt;
+&lt;a href="#demo" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;video controls width="100%"&gt;
+&lt;source src="demo.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+&lt;h2&gt;Architecture Notes&lt;span class="hx:absolute hx:-mt-20" id="architecture-notes"&gt;&lt;/span&gt;
+&lt;a href="#architecture-notes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threading lock serializes Volatility3 subprocess calls and handles corrupted symbol caches. The QThread worker + signal-based communication pattern built here got reused across later tools.&lt;/p&gt;</description></item><item><title>Memory Forensics</title><link>https://omnagdaa.github.io/docs/memory-forensics/</link><pubDate>Sun, 16 Aug 2026 03:37:00 +0530</pubDate><guid>https://omnagdaa.github.io/docs/memory-forensics/</guid><description/></item><item><title>Mobile Security</title><link>https://omnagdaa.github.io/docs/mobile-security/</link><pubDate>Sun, 16 Aug 2026 03:37:00 +0530</pubDate><guid>https://omnagdaa.github.io/docs/mobile-security/</guid><description/></item></channel></rss>

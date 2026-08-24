@@ -16,7 +16,7 @@
   --p-border-strong: #b9c1c9;
   --p-text: #10161c;
   --p-text-muted: #55606b;
-  --p-text-faint: #78838e;
+  --p-text-faint: #68727d; /* 4.89:1 on white, 4.60:1 on --p-bg-subtle */
 
   --p-accent: #0d7d74;
   --p-accent-hover: #0a625b;
@@ -26,8 +26,12 @@
   --p-warn: #9a5c00;
   --p-warn-bg: #fdf3e2;
 
-  --p-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", monospace;
+  /* Google Fonts loaded in layouts/_partials/custom/head-end.html.
+     Fallback stacks are metric-similar to limit shift if they fail. */
+  --p-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --p-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
 
   --p-radius: 10px;
   --p-radius-sm: 6px;
@@ -57,6 +61,34 @@
 
   --p-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 12px rgb(0 0 0 / 30%);
   --p-shadow-lift: 0 2px 4px rgb(0 0 0 / 50%), 0 12px 28px rgb(0 0 0 / 45%);
+}
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--p-sans);
+  font-feature-settings: "cv05" 1, "ss01" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4 {
+  font-family: var(--p-sans);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--p-mono);
+  font-feature-settings: "zero" 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -90,8 +122,9 @@
 }
 
 .p-section-title {
+  font-family: var(--p-sans);
   font-size: clamp(1.25rem, 2.2vw, 1.6rem);
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--p-text);
   text-wrap: balance;
@@ -132,7 +165,25 @@
    -------------------------------------------------------------------------- */
 
 .p-hero {
+  position: relative;
   padding-block: clamp(3rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem);
+  isolation: isolate;
+}
+
+/* Faint blueprint grid behind the hero. Decorative, so it is hidden from
+   assistive tech by virtue of being a background, and it never scrolls
+   independently or animates. */
+.p-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, var(--p-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--p-border) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  opacity: 0.4;
+  mask-image: radial-gradient(ellipse 80% 60% at 30% 0%, #000 20%, transparent 75%);
 }
 
 .p-hero-prompt {
@@ -148,10 +199,11 @@
 }
 
 .p-hero-title {
-  font-size: clamp(2.25rem, 6vw, 3.75rem);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  font-family: var(--p-mono);
+  font-size: clamp(1.875rem, 5vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
   color: var(--p-text);
   text-wrap: balance;
   margin: 0 0 1rem;
@@ -239,10 +291,35 @@
   transition-duration: 180ms;
 }
 
-a.p-card:hover {
+a.p-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Accent rule that grows across the card top on hover/focus. */
+a.p-card::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  background-color: var(--p-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms ease-out;
+}
+
+a.p-card:hover,
+a.p-card:focus-visible {
   border-color: var(--p-accent-border);
   box-shadow: var(--p-shadow-lift);
   transform: translateY(-2px);
+}
+
+a.p-card:hover::after,
+a.p-card:focus-visible::after {
+  transform: scaleX(1);
 }
 
 .p-card-title {
@@ -445,5 +522,9 @@ a.p-card:hover .p-card-title {
 
   a.p-card:hover {
     transform: none;
+  }
+
+  a.p-card::after {
+    transition: none;
   }
 }

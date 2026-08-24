@@ -2,3 +2,14 @@
      Values track --p-bg in assets/css/custom.css. */}}
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0b0f14" media="(prefers-color-scheme: dark)" />
+
+{{/* Typography: IBM Plex Sans for reading, JetBrains Mono for technical
+     detail. preconnect covers both the stylesheet and the font-file host;
+     display=swap renders text immediately in the fallback rather than
+     blocking on the download. */}}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+/>

@@ -1,0 +1,25 @@
+{{- with hugo.Data.stack }}
+<section class="p-section" aria-labelledby="stack-title">
+  <div class="p-wrap">
+    <div class="p-section-head">
+      <div>
+        <span class="p-eyebrow" aria-hidden="true" translate="no">// stack</span>
+        <h2 class="p-section-title" id="stack-title">Tools &amp; Technologies</h2>
+      </div>
+    </div>
+
+    <div class="p-stack-grid">
+      {{- range .groups }}
+        <div class="p-stack-group">
+          <h3>{{ .name }}</h3>
+          <ul class="p-stack-list">
+            {{- range .items }}
+              <li><span class="p-tag">{{ . }}</span></li>
+            {{- end }}
+          </ul>
+        </div>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

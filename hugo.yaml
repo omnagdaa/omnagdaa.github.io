@@ -1,9 +1,112 @@
 baseURL: https://omnagdaa.github.io/
 locale: en-us
-title: My New Hugo Project
+defaultContentLanguage: en
+title: Om Nagda
+enableRobotsTXT: true
+enableGitInfo: true
+hasCJKLanguage: false
+
 module:
   imports:
     - path: github.com/imfing/hextra
+
 caches:
   images:
     dir: :cacheDir/images
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+    lineNos: true
+    codeFences: true
+    guessSyntax: true
+    style: github-dark
+
+outputs:
+  home: [HTML, RSS]
+  section: [HTML, RSS]
+
+menu:
+  main:
+    - name: Projects
+      pageRef: /projects
+      weight: 1
+    - name: Writeups
+      pageRef: /blog
+      weight: 2
+    - name: Notes
+      pageRef: /docs
+      weight: 3
+    - name: About
+      pageRef: /about
+      weight: 4
+    - name: Search
+      weight: 5
+      params:
+        type: search
+    - name: GitHub
+      weight: 6
+      url: https://github.com/omnagdaa
+      params:
+        icon: github
+
+  sidebar:
+    - identifier: more
+      name: More
+      params:
+        type: separator
+      weight: 1
+    - identifier: resume
+      name: "Résumé ↗"
+      url: /resume.pdf
+      weight: 2
+
+params:
+  description: >-
+    Security engineering and DevOps — memory forensics, mobile security,
+    tooling, and infrastructure automation.
+
+  hero:
+    prompt: whoami
+    title: Om Nagda
+    lede: >-
+      Security engineer working across memory forensics, mobile security, and
+      the DevOps side of shipping tooling — building the analysis software I
+      wanted to exist.
+    actions:
+      - name: View Projects
+        url: /projects/
+        primary: true
+      - name: Read Writeups
+        url: /blog/
+      - name: GitHub
+        url: https://github.com/omnagdaa
+
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: images/logo.svg
+      dark: images/logo-dark.svg
+      width: 24
+      height: 24
+
+  footer:
+    enable: true
+    displayCopyright: true
+    displayPoweredBy: false
+    width: normal
+
+  theme:
+    default: system
+    displayToggle: true
+
+  editURL:
+    enable: false
+
+  blog:
+    list:
+      displayTags: true

@@ -1,0 +1,32 @@
+{{- $projects := where site.RegularPages "Section" "projects" -}}
+{{- $projects = first 6 (sort $projects "Params.weight") -}}
+{{- with $projects }}
+<section class="p-section" aria-labelledby="projects-title">
+  <div class="p-wrap">
+    <div class="p-section-head">
+      <div>
+        <span class="p-eyebrow" aria-hidden="true" translate="no">// projects</span>
+        <h2 class="p-section-title" id="projects-title">Things I&rsquo;ve Built</h2>
+      </div>
+      <a class="p-link-more" href="{{ "projects/" | relURL }}">All Projects</a>
+    </div>
+
+    <div class="p-grid">
+      {{- range . }}
+        <a class="p-card" href="{{ .RelPermalink }}">
+          <h3 class="p-card-title">{{ .Title }}</h3>
+          <p class="p-card-desc">{{ .Params.summary | default .Summary | plainify }}</p>
+          <div class="p-card-foot">
+            {{- with .Params.status }}
+              <span class="p-status {{ if eq . "Archived" }}p-status-archived{{ end }}">{{ . }}</span>
+            {{- end }}
+            {{- range first 3 .Params.tech }}
+              <span class="p-tag">{{ . }}</span>
+            {{- end }}
+          </div>
+        </a>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

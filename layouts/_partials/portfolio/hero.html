@@ -1,0 +1,19 @@
+{{- $p := site.Params.hero -}}
+<section class="p-hero" aria-labelledby="hero-title">
+  <div class="p-wrap">
+    <p class="p-hero-prompt">
+      <span class="p-sigil" aria-hidden="true">$</span>
+      <span>{{ $p.prompt | default "whoami" }}</span>
+    </p>
+    <h1 class="p-hero-title" id="hero-title">{{ $p.title | default site.Title }}</h1>
+    <p class="p-hero-lede">{{ $p.lede | default site.Params.description }}</p>
+    <div class="p-hero-actions">
+      {{- range $p.actions }}
+        <a class="p-btn {{ if .primary }}p-btn-primary{{ else }}p-btn-ghost{{ end }}"
+           href="{{ .url }}"{{ if strings.HasPrefix .url "http" }} rel="noopener"{{ end }}>
+          {{ .name }}
+        </a>
+      {{- end }}
+    </div>
+  </div>
+</section>

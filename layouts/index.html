@@ -1,0 +1,10 @@
+{{ define "main" }}
+  {{/* Custom portfolio landing page. Overrides Hextra's home template while
+       keeping its baseof (navbar, footer, search, theme toggle). */}}
+  <main id="content" class="p-home">
+    {{ partial "portfolio/hero.html" . }}
+    {{ partial "portfolio/projects.html" . }}
+    {{ partial "portfolio/stack.html" . }}
+    {{ partial "portfolio/writeups.html" . }}
+  </main>
+{{ end }}

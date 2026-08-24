@@ -1,0 +1,13 @@
+# Drives the "Tools & Technologies" section on the homepage.
+# Edit freely — the layout renders whatever groups exist here.
+groups:
+  - name: Security
+    items: [Volatility3, Ghidra, Burp Suite, Wireshark, Frida, nmap, YARA]
+  - name: Cloud & Infra
+    items: [Docker, Kubernetes, Terraform, Ansible, AWS, Linux]
+  - name: CI/CD & Automation
+    items: [GitHub Actions, GitLab CI, Bash, Make, Nix]
+  - name: Languages
+    items: [Python, Go, Rust, C, SQL, TypeScript]
+  - name: Observability
+    items: [Prometheus, Grafana, Loki, ELK Stack]

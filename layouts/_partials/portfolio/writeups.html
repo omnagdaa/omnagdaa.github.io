@@ -1,0 +1,27 @@
+{{- $posts := first 5 (where site.RegularPages "Section" "blog") -}}
+{{- with $posts }}
+<section class="p-section" aria-labelledby="writeups-title">
+  <div class="p-wrap">
+    <div class="p-section-head">
+      <div>
+        <span class="p-eyebrow" aria-hidden="true" translate="no">// writeups</span>
+        <h2 class="p-section-title" id="writeups-title">Latest Writeups</h2>
+      </div>
+      <a class="p-link-more" href="{{ "blog/" | relURL }}">All Writeups</a>
+    </div>
+
+    <div class="p-rows">
+      {{- range . }}
+        <a class="p-row" href="{{ .RelPermalink }}">
+          <span class="p-row-title">{{ .Title }}</span>
+          {{- with .Date }}
+            <time class="p-row-date" datetime="{{ .Format "2006-01-02" }}">
+              {{ time.Format ":date_medium" . }}
+            </time>
+          {{- end }}
+        </a>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

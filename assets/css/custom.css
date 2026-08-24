@@ -620,6 +620,210 @@ a.p-card:hover .p-card-title {
 }
 
 /* --------------------------------------------------------------------------
+   Documentation chrome (GitBook-flavoured)
+
+   Restyles Hextra's own sidebar, table of contents, and prose using its
+   stable class hooks — no template overrides. The aim is GitBook's reading
+   experience: a quiet sidebar that recedes, a comfortable measure, generous
+   vertical rhythm, and hairline rules instead of boxes.
+   -------------------------------------------------------------------------- */
+
+/* Hextra's content column is 72rem, which is far too wide a measure for
+   prose — GitBook sits near 50rem. This is the single knob for that; raising
+   it widens every docs, notes, and project page. */
+:root {
+  --hextra-max-content-width: 52rem;
+}
+
+/* --- Sidebar ------------------------------------------------------------ */
+
+.hextra-sidebar-container {
+  font-size: 0.875rem;
+}
+
+.hextra-sidebar-container a.hextra-sidebar-item,
+.hextra-sidebar-container button.hextra-sidebar-item {
+  padding-block: 0.4rem;
+  padding-inline: 0.75rem;
+  border-radius: var(--p-radius-sm);
+  font-weight: 450;
+  line-height: 1.45;
+  color: var(--p-text-muted);
+  transition: color 140ms, background-color 140ms;
+}
+
+.hextra-sidebar-container a.hextra-sidebar-item:hover,
+.hextra-sidebar-container button.hextra-sidebar-item:hover {
+  color: var(--p-text);
+  background-color: var(--p-bg-subtle);
+}
+
+/* GitBook marks the current page with colour and a hairline, not a filled
+   pill — it keeps the rail quiet while still being unambiguous. */
+.hextra-sidebar-container .hextra-sidebar-active-item,
+.hextra-sidebar-container a.hextra-sidebar-item[aria-current="page"] {
+  color: var(--p-accent);
+  font-weight: 550;
+  background-color: transparent;
+  box-shadow: inset 2px 0 0 var(--p-accent);
+}
+
+/* Nested pages hang off a hairline rail. */
+.hextra-sidebar-container .hextra-sidebar-children {
+  margin-inline-start: 0.75rem;
+  padding-inline-start: 0.5rem;
+  border-inline-start: 1px solid var(--p-border);
+}
+
+/* --- Table of contents -------------------------------------------------- */
+
+.hextra-toc {
+  font-size: 0.8125rem;
+}
+
+.hextra-toc a {
+  display: block;
+  padding-block: 0.3rem;
+  color: var(--p-text-muted);
+  line-height: 1.5;
+  transition: color 140ms;
+}
+
+.hextra-toc a:hover {
+  color: var(--p-accent);
+}
+
+/* --- Prose -------------------------------------------------------------- */
+
+.content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--p-text);
+}
+
+.content h1 {
+  font-size: clamp(1.875rem, 3.4vw, 2.4rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+
+.content h2 {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--p-border);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.content h3 {
+  margin-top: 2.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.content p,
+.content ul,
+.content ol {
+  margin-block: 1rem;
+}
+
+.content li {
+  margin-block: 0.35rem;
+}
+
+.content a {
+  color: var(--p-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+.content a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Inline code reads as a token, not a box. */
+.content :not(pre) > code {
+  padding: 0.15em 0.35em;
+  font-size: 0.875em;
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius-sm);
+  background-color: var(--p-bg-subtle);
+}
+
+.content pre {
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius);
+  /* Long lines scroll inside the block rather than widening the page. */
+  overflow-x: auto;
+}
+
+.content blockquote {
+  margin-block: 1.5rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-inline-start: 3px solid var(--p-accent);
+  color: var(--p-text-muted);
+  font-style: normal;
+}
+
+.content figure {
+  margin-block: 2rem;
+}
+
+.content figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  color: var(--p-text-faint);
+  text-align: center;
+}
+
+.content img,
+.content video {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius);
+}
+
+/* Tables: hairlines, no heavy fills, and they scroll rather than overflow. */
+.content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.content th,
+.content td {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--p-border);
+  text-align: start;
+}
+
+.content th {
+  background-color: var(--p-bg-subtle);
+  font-weight: 600;
+}
+
+/* --- Prev / next pager -------------------------------------------------- */
+
+.content ~ nav a,
+nav.hextra-pager a {
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius);
+  padding: 0.85rem 1rem;
+  transition: border-color 150ms, background-color 150ms;
+}
+
+.content ~ nav a:hover,
+nav.hextra-pager a:hover {
+  border-color: var(--p-accent-border);
+  background-color: var(--p-bg-subtle);
+}
+
+/* --------------------------------------------------------------------------
    Pointer effects
 
    Two layers, both driven by CSS custom properties that JS writes on a

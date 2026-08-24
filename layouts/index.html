@@ -1,10 +1,16 @@
 {{ define "main" }}
   {{/* Custom portfolio landing page. Overrides Hextra's home template while
        keeping its baseof (navbar, footer, search, theme toggle). */}}
-  <main id="content" class="p-home">
-    {{ partial "portfolio/hero.html" . }}
-    {{ partial "portfolio/projects.html" . }}
-    {{ partial "portfolio/stack.html" . }}
-    {{ partial "portfolio/writeups.html" . }}
-  </main>
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    {{/* Required even though the landing page has no sidebar: this partial
+         also renders the mobile drawer the navbar hamburger opens. Without
+         it the hamburger is present but does nothing. */}}
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+    <main id="content" class="p-home hx:w-full hx:min-w-0 hx:break-words">
+      {{ partial "portfolio/hero.html" . }}
+      {{ partial "portfolio/projects.html" . }}
+      {{ partial "portfolio/stack.html" . }}
+      {{ partial "portfolio/writeups.html" . }}
+    </main>
+  </div>
 {{ end }}

@@ -27,6 +27,8 @@ Usage: ./site <command> [args]
 
   publish <path>     Flip draft: true -> false for a page
   drafts             List everything still unpublished
+  ascii [video]      Regenerate the ASCII background frames from a video
+                     (default: content/projects/dumpscope/demo.mp4)
   build              Production build into public/
   check              Build and scan for broken internal links
 
@@ -79,6 +81,13 @@ case "$cmd" in
       grep -q '^draft: true$' "$f" && { echo "  ${f#content/}"; found=1; }
     done < <(find content -name '*.md')
     if [ "$found" -eq 0 ]; then info "no drafts — everything is published"; fi
+    ;;
+
+  ascii)
+    video="${1:-content/projects/dumpscope/demo.mp4}"
+    command -v ffmpeg >/dev/null || die "ffmpeg not found (sudo pacman -S ffmpeg)"
+    python3 tools/ascii-bg.py "$video"
+    info "rebuilt the background frames — commit assets/ascii/frames.json"
     ;;
 
   build)

@@ -36,6 +36,21 @@ manual HTML is needed.
 Other commands: `./site preview` (localhost:1313, drafts visible),
 `./site drafts`, `./site build`, `./site check` (build + broken-link scan).
 
+## ASCII background
+
+The ambient backdrop is derived from a video, but no video is shipped. At
+build time `tools/ascii-bg.py` extracts frames, runs edge detection, and
+writes text frames to `assets/ascii/frames.json` (~2 KB gzipped). Regenerate
+with `./site ascii [video]` and commit the JSON.
+
+Edge detection rather than a brightness ramp: screen recordings are mostly
+flat regions and turn to featureless mush under plain luminance, whereas edges
+keep window outlines and UI structure legible.
+
+The sequence plays one pass (~5s) then holds the densest frame. An indefinite
+loop would be autoplay motion over 5 seconds, which WCAG 2.2.2 requires a
+pause control for — playing once avoids that and costs no ongoing CPU.
+
 ## Structure
 
 - `layouts/index.html` + `layouts/_partials/portfolio/` — custom landing page
@@ -43,6 +58,7 @@ Other commands: `./site preview` (localhost:1313, drafts visible),
 - `layouts/docs/list.html` — Hextra's docs list plus auto child listing
 - `assets/css/custom.css` — design system, all classes `p-` prefixed
 - `data/stack.yaml` — drives the homepage skills section
+- `assets/js/ascii-bg.js` + `assets/ascii/frames.json` — background (generated)
 - `i18n/en.yaml` — footer copyright (it is an i18n string in Hextra, not a param)
 
 Two Hugo gotchas already hit here, worth remembering:

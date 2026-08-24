@@ -13,3 +13,15 @@
   rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
 />
+
+{{/* Ambient ASCII background. Frames are pre-rendered by tools/ascii-bg.py,
+     so nothing decodes video at runtime. Decorative and non-blocking. */}}
+{{- with resources.Get "ascii/frames.json" -}}
+  {{- $frames := . -}}
+  {{- $js := resources.Get "js/ascii-bg.js" -}}
+  {{- if hugo.IsProduction -}}
+    {{- $frames = $frames | fingerprint -}}
+    {{- $js = $js | minify | fingerprint -}}
+  {{- end -}}
+  <script defer src="{{ $js.RelPermalink }}" data-frames="{{ $frames.RelPermalink }}"></script>
+{{- end -}}

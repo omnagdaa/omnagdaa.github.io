@@ -165,25 +165,7 @@ samp {
    -------------------------------------------------------------------------- */
 
 .p-hero {
-  position: relative;
   padding-block: clamp(3rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem);
-  isolation: isolate;
-}
-
-/* Faint blueprint grid behind the hero. Decorative, so it is hidden from
-   assistive tech by virtue of being a background, and it never scrolls
-   independently or animates. */
-.p-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(to right, var(--p-border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--p-border) 1px, transparent 1px);
-  background-size: 3rem 3rem;
-  opacity: 0.4;
-  mask-image: radial-gradient(ellipse 80% 60% at 30% 0%, #000 20%, transparent 75%);
 }
 
 .p-hero-prompt {
@@ -499,6 +481,53 @@ a.p-card:hover .p-card-title {
   background-color: var(--p-bg-subtle);
   border: 1px dashed var(--p-border);
   border-radius: var(--p-radius);
+}
+
+/* --------------------------------------------------------------------------
+   Ambient ASCII background
+
+   Built at runtime by assets/js/ascii-bg.js from frames pre-rendered by
+   tools/ascii-bg.py. Decorative: aria-hidden in markup, inert here, and kept
+   faint enough that it never touches text contrast. Sits behind everything.
+   -------------------------------------------------------------------------- */
+
+.p-ascii-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  margin: 0;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--p-mono);
+  /* Width is cols x ~0.6em, so this keeps the art spanning the viewport;
+     the vh term stops it collapsing on tall portrait screens. */
+  font-size: max(1.667vw, 2.1vh);
+  line-height: 1.25;
+  white-space: pre;
+  color: var(--p-accent);
+  opacity: 0.055;
+
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The script already stops swapping frames; this also drops it further back
+     so the remaining still frame reads as texture, not content. */
+  .p-ascii-bg {
+    opacity: 0.04;
+  }
+}
+
+@media print {
+  .p-ascii-bg {
+    display: none;
+  }
 }
 
 /* --------------------------------------------------------------------------

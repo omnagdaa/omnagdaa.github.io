@@ -131,6 +131,11 @@ fresh clone re-fetch it from
 ## Deploy
 
 Push to `main`. `.github/workflows/deploy.yml` builds and publishes to
-`gh-pages`. The custom domain comes from the `CNAME` repo variable (Settings →
+`gh-pages`.
+
+`.github/workflows/` must stay **tracked on `main`** — GitHub reads workflows
+from the branch being pushed, so gitignoring it silently disables deploys. It
+is the thing that implements the main-source / gh-pages-output split, not a
+stray config file. Same for `.gitignore`, `go.mod`, and `go.sum`. The custom domain comes from the `CNAME` repo variable (Settings →
 Secrets and variables → Actions → Variables); unset, the site builds against
 `https://omnagdaa.github.io/`.

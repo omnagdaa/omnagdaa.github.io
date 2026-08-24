@@ -1,5 +1,7 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>My New Hugo Project – Docs</title><link>https://omnagdaa.github.io/docs/</link><description>Recent content in Docs on My New Hugo Project</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 16 Aug 2026 03:37:00 +0530</lastBuildDate><atom:link href="https://omnagdaa.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>DumpScope</title><link>https://omnagdaa.github.io/docs/projects/dumpscope/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://omnagdaa.github.io/docs/projects/dumpscope/</guid><description>
-&lt;p&gt;DumpScope is a memory forensics desktop application built with Python, PyQt6, and Volatility3 — designed to streamline memory dump analysis with a wizard-driven UI instead of raw CLI commands.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Om Nagda – Notes</title><link>https://omnagdaa.github.io/docs/</link><description>Recent content in Notes on Om Nagda</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://omnagdaa.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>DumpScope</title><link>https://omnagdaa.github.io/projects/dumpscope/</link><pubDate>Sun, 16 Aug 2026 00:00:00 +0000</pubDate><guid>https://omnagdaa.github.io/projects/dumpscope/</guid><description>
+&lt;p&gt;DumpScope is a memory forensics desktop application built with Python, PyQt6, and
+Volatility3 — designed to streamline memory dump analysis with a wizard-driven UI
+instead of raw CLI commands.&lt;/p&gt;
 &lt;h2&gt;Features&lt;span class="hx:absolute hx:-mt-20" id="features"&gt;&lt;/span&gt;
 &lt;a href="#features" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Wizard UI walking through case setup to analysis&lt;/li&gt;
@@ -10,19 +12,27 @@
 &lt;li&gt;Process dumping directly from the UI&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Screenshots&lt;span class="hx:absolute hx:-mt-20" id="screenshots"&gt;&lt;/span&gt;
-&lt;a href="#screenshots" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;figure&gt;&lt;img src="https://omnagdaa.github.io/docs/projects/dumpscope/start.png"
-alt="DumpScope wizard UI"&gt;&lt;figcaption&gt;
-&lt;p&gt;Case setup wizard&lt;/p&gt;
-&lt;/figcaption&gt;
+&lt;a href="#screenshots" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;figure&gt;
+&lt;img src="start.png" alt="DumpScope case setup wizard showing the initial case configuration step"
+width="744" height="701" loading="lazy"&gt;
+&lt;figcaption&gt;Case setup wizard&lt;/figcaption&gt;
 &lt;/figure&gt;
-&lt;figure&gt;&lt;img src="https://omnagdaa.github.io/docs/projects/dumpscope/dashboard.png"
-alt="Plugin ribbon"&gt;&lt;figcaption&gt;
-&lt;p&gt;Running Volatility3 plugins via the ribbon&lt;/p&gt;
-&lt;/figcaption&gt;
+&lt;figure&gt;
+&lt;img src="dashboard.png" alt="DumpScope plugin ribbon with Volatility3 plugin results displayed in a table"
+width="1904" height="1001" loading="lazy"&gt;
+&lt;figcaption&gt;Running Volatility3 plugins via the ribbon&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;h2&gt;Demo&lt;span class="hx:absolute hx:-mt-20" id="demo"&gt;&lt;/span&gt;
-&lt;a href="#demo" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;video controls width="100%"&gt;
+&lt;a href="#demo" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;video controls muted playsinline preload="metadata" poster="dashboard.png" width="1904" height="1001"&gt;
 &lt;source src="demo.mp4" type="video/mp4"&gt;
+Your browser does not support embedded video.
+&lt;a href="demo.mp4"&gt;Download the demo (MP4)&lt;/a&gt;.
 &lt;/video&gt;
 &lt;h2&gt;Architecture Notes&lt;span class="hx:absolute hx:-mt-20" id="architecture-notes"&gt;&lt;/span&gt;
-&lt;a href="#architecture-notes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threading lock serializes Volatility3 subprocess calls and handles corrupted symbol caches. The QThread worker + signal-based communication pattern built here got reused across later tools.&lt;/p&gt;</description></item><item><title>Memory Forensics</title><link>https://omnagdaa.github.io/docs/memory-forensics/</link><pubDate>Sun, 16 Aug 2026 03:37:00 +0530</pubDate><guid>https://omnagdaa.github.io/docs/memory-forensics/</guid><description/></item><item><title>Mobile Security</title><link>https://omnagdaa.github.io/docs/mobile-security/</link><pubDate>Sun, 16 Aug 2026 03:37:00 +0530</pubDate><guid>https://omnagdaa.github.io/docs/mobile-security/</guid><description/></item></channel></rss>
+&lt;a href="#architecture-notes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threading lock serializes Volatility3 subprocess calls and handles corrupted symbol
+caches. The QThread worker + signal-based communication pattern built here got reused
+across later tools.&lt;/p&gt;</description></item><item><title>Memory Forensics</title><link>https://omnagdaa.github.io/docs/memory-forensics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://omnagdaa.github.io/docs/memory-forensics/</guid><description>
+&lt;p&gt;Notes on acquiring and analyzing memory images with Volatility3.&lt;/p&gt;
+&lt;!-- TODO: this page was a title-only stub on the live site. Fill in. --&gt;</description></item><item><title>Mobile Security</title><link>https://omnagdaa.github.io/docs/mobile-security/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://omnagdaa.github.io/docs/mobile-security/</guid><description>
+&lt;p&gt;Notes on Android and iOS application security testing.&lt;/p&gt;
+&lt;!-- TODO: this page was a title-only stub on the live site. Fill in. --&gt;</description></item></channel></rss>

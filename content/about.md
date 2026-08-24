@@ -18,3 +18,4 @@ _Add certifications here._
 ## Contact
 
 - GitHub: [@omnagdaa](https://github.com/omnagdaa)
+- LinkedIn: [@omnagdaa](https://www.linkedin.com/in/omnagdaa/)

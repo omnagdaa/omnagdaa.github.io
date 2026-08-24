@@ -30,7 +30,7 @@ Usage: ./site <command> [args]
   ascii [video]      Regenerate the ASCII background frames from a video
                      (default: content/projects/dumpscope/demo.mp4)
   build              Production build into public/
-  check              Build and scan for broken internal links
+  check              Build, scan for broken links, verify mobile menu wiring
 
 Attachments: put images/videos inside the created folder, next to index.md,
 and reference them by bare filename. Nothing else to configure.
@@ -109,7 +109,22 @@ case "$cmd" in
       [ -e "$f" ] || { echo "  BROKEN: $u"; broken=1; }
     done < <(find . -name '*.html' -exec grep -hoE '(href|src)=/[^ >"]*' {} + \
              | sed -E 's/^(href|src)=//' | sed 's/[#?].*//' | sort -u)
-    if [ "$broken" -eq 0 ]; then info "no broken internal links"; else die "broken links found"; fi
+    if [ "$broken" -eq 0 ]; then info "no broken internal links"; fi
+
+    # Hextra's menu.js resolves .hextra-sidebar-container and calls
+    # setAttribute on it with no null guard, so a layout that renders the
+    # hamburger without the sidebar partial throws during DOMContentLoaded
+    # and the menu silently stops opening. Nothing else catches this: it is a
+    # runtime error visible only in a browser console.
+    info "checking hamburger/sidebar pairing"
+    orphans=0
+    while IFS= read -r f; do
+      grep -q 'hextra-sidebar-container' "$f" || { echo "  NO SIDEBAR: ${f#./}"; orphans=1; }
+    done < <(grep -rl 'hextra-hamburger-menu' . --include='*.html' | sort)
+    if [ "$orphans" -eq 0 ]; then info "every hamburger has its sidebar"; fi
+
+    [ "$broken" -eq 0 ] || die "broken internal links"
+    [ "$orphans" -eq 0 ] || die "hamburger without sidebar container (mobile menu will not open)"
     ;;
 
   ""|-h|--help|help) usage ;;

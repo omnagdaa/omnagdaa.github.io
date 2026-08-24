@@ -1,0 +1,31 @@
+{{ define "main" }}
+  {{/* Overrides Hextra's standalone 404, which ships no navbar, no way back,
+       and resolves theme from prefers-color-scheme only — so it fights the
+       site's own theme toggle. Going through baseof inherits all of it. */}}
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    {{/* Required even though this page has no sidebar: this partial also
+         renders the mobile drawer the navbar hamburger opens. */}}
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+    <main id="content" class="p-home hx:w-full hx:min-w-0 hx:break-words">
+      <section class="p-hero" aria-labelledby="nf-title">
+        <div class="p-wrap">
+          <p class="p-hero-prompt">
+            <span class="p-sigil" aria-hidden="true">$</span>
+            <span>cat {{ with .Page.RelPermalink }}{{ . }}{{ else }}$REQUEST_URI{{ end }}</span>
+          </p>
+          <h1 class="p-hero-title" id="nf-title">404</h1>
+          <p class="p-hero-lede">
+            No such file or directory. The page may have been moved or renamed —
+            these are still here:
+          </p>
+          <div class="p-hero-actions">
+            <a class="p-btn p-btn-primary" href="{{ "/" | relURL }}">Home</a>
+            <a class="p-btn p-btn-ghost" href="{{ "/projects/" | relURL }}">Projects</a>
+            <a class="p-btn p-btn-ghost" href="{{ "/blog/" | relURL }}">Writeups</a>
+            <a class="p-btn p-btn-ghost" href="{{ "/docs/" | relURL }}">Notes</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+{{ end }}

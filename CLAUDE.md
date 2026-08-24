@@ -43,6 +43,10 @@ build time `tools/ascii-bg.py` extracts frames, runs edge detection, and
 writes text frames to `assets/ascii/frames.json` (~2 KB gzipped). Regenerate
 with `./site ascii [video]` and commit the JSON.
 
+The source video (`video.mp4`) is **gitignored** — it is a build input, not a
+deliverable. Keep a local copy; regenerating needs it, serving the site does
+not.
+
 Edge detection rather than a brightness ramp: screen recordings are mostly
 flat regions and turn to featureless mush under plain luminance, whereas edges
 keep window outlines and UI structure legible.
@@ -119,6 +123,10 @@ Follow the Vercel Web Interface Guidelines in
 templates, partials, layouts, CSS, or JS — not only when reviewing. The same
 file is invokable as `/web-interface-guidelines <file-or-pattern>` to audit
 existing files.
+
+`.claude/` is gitignored (local agent config, not project source), so on a
+fresh clone re-fetch it from
+<https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md>.
 
 ## Deploy
 

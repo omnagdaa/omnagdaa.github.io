@@ -47,9 +47,29 @@ Edge detection rather than a brightness ramp: screen recordings are mostly
 flat regions and turn to featureless mush under plain luminance, whereas edges
 keep window outlines and UI structure legible.
 
-The sequence plays one pass (~5s) then holds the densest frame. An indefinite
-loop would be autoplay motion over 5 seconds, which WCAG 2.2.2 requires a
-pause control for — playing once avoids that and costs no ongoing CPU.
+The sequence loops continuously at 10% opacity. Because that is autoplay
+motion lasting over five seconds, WCAG 2.2.2 requires a pause mechanism: the
+navbar pause button is it, and it is load-bearing — if no control is found on
+the page the script leaves playback stopped rather than shipping motion nobody
+can turn off. The choice persists in localStorage; prefers-reduced-motion
+overrides a stored "playing" preference and hides the control.
+
+Text colours are tuned against the *blended* background, not the flat one:
+`--p-text-faint` sits at 4.67:1 (light) and 4.65:1 (dark) worst case, with a
+dense glyph directly behind it. Raising the opacity again means re-checking
+those two values.
+
+## Navbar controls
+
+`layouts/_partials/navbar.html` overrides Hextra's to add two menu types,
+wired from `menu.main` in hugo.yaml:
+
+- `theme-switch` — one-click light/dark. Hextra's own control is a three-item
+  dropdown; `params.theme.displayToggle` is false so there is only one.
+- `motion-toggle` — pause/play for the background.
+
+Both reuse Hextra's `color-theme` localStorage key and its `light`/`dark`
+class on `<html>`, so nothing can desync. Re-check the override on upgrades.
 
 ## Structure
 

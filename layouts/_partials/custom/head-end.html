@@ -25,3 +25,10 @@
   {{- end -}}
   <script defer src="{{ $js.RelPermalink }}" data-frames="{{ $frames.RelPermalink }}"></script>
 {{- end -}}
+
+{{/* One-click light/dark switch in the navbar. */}}
+{{- with resources.Get "js/theme-switch.js" -}}
+  {{- $js := . -}}
+  {{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end -}}
+  <script defer src="{{ $js.RelPermalink }}"></script>
+{{- end -}}

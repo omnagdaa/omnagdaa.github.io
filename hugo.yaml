@@ -52,6 +52,14 @@ menu:
       url: https://github.com/omnagdaa
       params:
         icon: github
+    - name: Background motion
+      weight: 7
+      params:
+        type: motion-toggle
+    - name: Theme
+      weight: 8
+      params:
+        type: theme-switch
 
   # Re-add once static/resume.pdf exists:
   # sidebar:
@@ -98,7 +106,8 @@ params:
 
   theme:
     default: system
-    displayToggle: true
+    # Hextra's built-in dropdown is replaced by the navbar theme-switch button.
+    displayToggle: false
 
   editURL:
     enable: false

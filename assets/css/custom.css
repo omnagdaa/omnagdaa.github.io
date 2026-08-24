@@ -16,7 +16,8 @@
   --p-border-strong: #b9c1c9;
   --p-text: #10161c;
   --p-text-muted: #55606b;
-  --p-text-faint: #68727d; /* 4.89:1 on white, 4.60:1 on --p-bg-subtle */
+  /* Passes AA even under the 10% ASCII overlay: 4.67:1 worst case. */
+  --p-text-faint: #626c77;
 
   --p-accent: #0d7d74;
   --p-accent-hover: #0a625b;
@@ -49,7 +50,8 @@
   --p-border-strong: #33465c;
   --p-text: #e6edf3;
   --p-text-muted: #9bacbf;
-  --p-text-faint: #71818f;
+  /* Passes AA even under the 10% ASCII overlay: 4.65:1 worst case. */
+  --p-text-faint: #7b8b99;
 
   --p-accent: #3ddbc7;
   --p-accent-hover: #6ae8d8;
@@ -484,6 +486,75 @@ a.p-card:hover .p-card-title {
 }
 
 /* --------------------------------------------------------------------------
+   Navbar icon buttons (theme switch, background motion)
+   -------------------------------------------------------------------------- */
+
+.p-navbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px hit target even though the icon is 24px. */
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--p-radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 150ms, color 150ms;
+}
+
+.p-navbtn:hover {
+  color: var(--p-accent);
+  background-color: var(--p-accent-bg);
+}
+
+.p-navbtn:focus-visible {
+  outline: 2px solid var(--p-accent);
+  outline-offset: -2px;
+}
+
+.p-navbtn[hidden] {
+  display: none;
+}
+
+.p-navbtn-icon {
+  display: none;
+  line-height: 0;
+}
+
+/* Theme icons resolve from the class Hextra puts on <html>, so the right
+   glyph shows on first paint without waiting for script. */
+:root.light .p-navbtn .p-when-light,
+:root:not(.dark) .p-navbtn .p-when-light,
+:root.dark .p-navbtn .p-when-dark {
+  display: inline-flex;
+}
+
+:root.dark .p-navbtn .p-when-light {
+  display: none;
+}
+
+/* Motion icons follow the paused state set by the script. */
+.p-navbtn[data-motion-toggle] .p-motion-playing {
+  display: inline-flex;
+}
+
+.p-navbtn[data-motion-toggle] .p-motion-paused {
+  display: none;
+}
+
+.p-navbtn[data-motion-toggle].is-paused .p-motion-playing {
+  display: none;
+}
+
+.p-navbtn[data-motion-toggle].is-paused .p-motion-paused {
+  display: inline-flex;
+}
+
+/* --------------------------------------------------------------------------
    Ambient ASCII background
 
    Built at runtime by assets/js/ascii-bg.js from frames pre-rendered by
@@ -509,7 +580,7 @@ a.p-card:hover .p-card-title {
   line-height: 1.25;
   white-space: pre;
   color: var(--p-accent);
-  opacity: 0.055;
+  opacity: 0.1;
 
   pointer-events: none;
   user-select: none;
@@ -520,7 +591,7 @@ a.p-card:hover .p-card-title {
   /* The script already stops swapping frames; this also drops it further back
      so the remaining still frame reads as texture, not content. */
   .p-ascii-bg {
-    opacity: 0.04;
+    opacity: 0.07;
   }
 }
 

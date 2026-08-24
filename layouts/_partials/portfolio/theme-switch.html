@@ -1,0 +1,18 @@
+{{- $h := .iconHeight | default 24 -}}
+{{- $label := "Switch between light and dark theme" -}}
+<button
+  type="button"
+  class="p-navbtn"
+  data-theme-switch
+  aria-label="{{ $label }}"
+  title="{{ $label }}"
+>
+  {{/* Both icons ship; CSS shows whichever matches the active theme, so the
+       correct one is right even before the script runs. */}}
+  <span class="p-navbtn-icon p-when-light" aria-hidden="true">
+    {{- partial "utils/icon.html" (dict "name" "moon" "attributes" (printf "height=%d width=%d" $h $h)) -}}
+  </span>
+  <span class="p-navbtn-icon p-when-dark" aria-hidden="true">
+    {{- partial "utils/icon.html" (dict "name" "sun" "attributes" (printf "height=%d width=%d" $h $h)) -}}
+  </span>
+</button>

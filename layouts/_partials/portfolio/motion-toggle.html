@@ -1,0 +1,20 @@
+{{- $h := .iconHeight | default 24 -}}
+{{/* Hidden by default; the background script reveals it only once the
+     animation is actually running, so the control never lies about what it
+     does (no background loaded, or reduced-motion honoured = no button). */}}
+<button
+  type="button"
+  class="p-navbtn"
+  data-motion-toggle
+  hidden
+  aria-pressed="false"
+  aria-label="Pause background animation"
+  title="Pause background animation"
+>
+  <span class="p-navbtn-icon p-motion-playing" aria-hidden="true">
+    {{- partial "utils/icon.html" (dict "name" "pause" "attributes" (printf "height=%d width=%d" $h $h)) -}}
+  </span>
+  <span class="p-navbtn-icon p-motion-paused" aria-hidden="true">
+    {{- partial "utils/icon.html" (dict "name" "play" "attributes" (printf "height=%d width=%d" $h $h)) -}}
+  </span>
+</button>

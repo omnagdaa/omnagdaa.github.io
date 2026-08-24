@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# Site helper. Run ./site with no arguments for usage.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+die() { printf '\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
+info() { printf '\033[36m==>\033[0m %s\n' "$*"; }
+
+# Checked lazily: usage and `drafts` need no toolchain.
+require_toolchain() {
+  command -v hugo >/dev/null || die "hugo not found. Install it first."
+  # Hextra is a Hugo Module, so builds need the Go toolchain.
+  command -v go >/dev/null || die "go not found — Hextra is a Hugo Module and \
+cannot resolve without it. Install with:  sudo pacman -S go"
+}
+
+usage() {
+  cat <<'USAGE'
+Usage: ./site <command> [args]
+
+  preview            Start the local server at http://localhost:1313
+                     (includes drafts, so you see unpublished work)
+
+  new blog <slug>    Create a new writeup folder
+  new notes <slug>   Create a new note folder
+  new project <slug> Create a new project folder
+
+  publish <path>     Flip draft: true -> false for a page
+  drafts             List everything still unpublished
+  build              Production build into public/
+  check              Build and scan for broken internal links
+
+Attachments: put images/videos inside the created folder, next to index.md,
+and reference them by bare filename. Nothing else to configure.
+USAGE
+}
+
+cmd="${1:-}"; shift || true
+
+case "$cmd" in
+  preview)
+    require_toolchain
+    info "http://localhost:1313 — drafts visible, live reload on"
+    exec hugo server --bind 127.0.0.1 --port 1313 --buildDrafts --disableFastRender
+    ;;
+
+  new)
+    kind="${1:-}"; slug="${2:-}"
+    [ -n "$kind" ] && [ -n "$slug" ] || die "usage: ./site new <blog|notes|project> <slug>"
+    case "$kind" in
+      blog)    section=blog ;;
+      notes)   section=docs ;;
+      project) section=projects ;;
+      *) die "unknown kind '$kind' (expected: blog, notes, project)" ;;
+    esac
+    require_toolchain
+    target="$section/$slug/index.md"
+    [ -e "content/$target" ] && die "content/$target already exists"
+    hugo new content "$target"
+    info "created content/$section/$slug/"
+    info "put images and videos in that folder, then: ./site publish $section/$slug"
+    ;;
+
+  publish)
+    path="${1:-}"
+    [ -n "$path" ] || die "usage: ./site publish <section/slug>"
+    f="content/${path%/}/index.md"
+    [ -f "$f" ] || f="content/${path%/}.md"
+    [ -f "$f" ] || die "no page found at content/$path"
+    grep -q '^draft: true$' "$f" || die "$f is not a draft (already published?)"
+    sed -i 's/^draft: true$/draft: false/' "$f"
+    info "published $f"
+    info "commit and push to main to deploy"
+    ;;
+
+  drafts)
+    found=0
+    while IFS= read -r f; do
+      grep -q '^draft: true$' "$f" && { echo "  ${f#content/}"; found=1; }
+    done < <(find content -name '*.md')
+    if [ "$found" -eq 0 ]; then info "no drafts — everything is published"; fi
+    ;;
+
+  build)
+    require_toolchain
+    rm -rf public
+    hugo --minify --gc
+    ;;
+
+  check)
+    require_toolchain
+    rm -rf public
+    hugo --minify --gc
+    info "scanning internal links"
+    broken=0
+    cd public
+    while IFS= read -r u; do
+      [ -z "$u" ] && continue
+      case "$u" in */) f=".${u}index.html" ;; *) f=".${u}" ;; esac
+      [ -e "$f" ] || { echo "  BROKEN: $u"; broken=1; }
+    done < <(find . -name '*.html' -exec grep -hoE '(href|src)=/[^ >"]*' {} + \
+             | sed -E 's/^(href|src)=//' | sed 's/[#?].*//' | sort -u)
+    if [ "$broken" -eq 0 ]; then info "no broken internal links"; else die "broken links found"; fi
+    ;;
+
+  ""|-h|--help|help) usage ;;
+  *) die "unknown command '$cmd' (run ./site for usage)" ;;
+esac

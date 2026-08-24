@@ -1,0 +1,44 @@
+{{- /*
+  Embed a video attachment sitting next to index.md in a page bundle.
+
+    {{< video src="demo.mp4" poster="shot.png" caption="Tool walkthrough" >}}
+
+  Emits dimensions from the poster when available (prevents layout shift),
+  keeps controls for keyboard access, and always offers a download fallback.
+*/ -}}
+{{- $src := .Get "src" | default "" -}}
+{{- $poster := .Get "poster" | default "" -}}
+{{- $caption := .Get "caption" | default "" -}}
+
+{{- if not $src -}}
+  {{- errorf "video shortcode: missing required 'src' (%s)" .Position -}}
+{{- end -}}
+
+{{- $url := $src -}}
+{{- with $.Page.Resources.Get $src -}}
+  {{- $url = .RelPermalink -}}
+{{- end -}}
+
+{{- $posterURL := "" -}}
+{{- $dims := "" -}}
+{{- if $poster -}}
+  {{- with $.Page.Resources.Get $poster -}}
+    {{- $posterURL = .RelPermalink -}}
+    {{- if eq .ResourceType "image" -}}
+      {{- $dims = printf ` width="%d" height="%d"` .Width .Height -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $posterURL = $poster -}}
+  {{- end -}}
+{{- end -}}
+
+<figure>
+  <video controls muted playsinline preload="metadata"
+    {{- with $posterURL }} poster="{{ . }}"{{ end }}
+    {{- $dims | safeHTMLAttr }}>
+    <source src="{{ $url }}" type="video/mp4" />
+    Your browser does not support embedded video.
+    <a href="{{ $url }}">Download the video (MP4)</a>.
+  </video>
+  {{- with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>

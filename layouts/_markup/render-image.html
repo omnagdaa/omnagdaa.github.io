@@ -1,0 +1,77 @@
+{{- /*
+  Based on Hextra's render-image.html, with one addition: intrinsic
+  width/height are emitted for local images so the browser reserves space and
+  the page doesn't shift as images load (CLS). Everything else — bundle
+  resource resolution, figure/caption, lazy loading — matches the theme.
+
+  This means markdown `![alt](shot.png "Caption")` inside a page bundle
+  produces fully compliant markup with no manual HTML.
+*/ -}}
+{{- $alt := .PlainText | safeHTML -}}
+{{- $lazyLoading := .Page.Site.Params.enableImageLazyLoading | default true -}}
+{{- $enableImageZoom := .Page.Site.Params.imageZoom.enable | default false -}}
+{{- if not (eq .Page.Params.imageZoom nil) -}}
+  {{- $enableImageZoom = .Page.Params.imageZoom -}}
+{{- end -}}
+{{- $dest := .Destination -}}
+{{- $url := urls.Parse $dest -}}
+
+{{- $isLocal := not $url.Scheme -}}
+{{- $isPage := and (eq .Page.Kind "page") (not .Page.BundleType) -}}
+{{- $startsWithSlash := hasPrefix $dest "/" -}}
+{{- $startsWithRelative := hasPrefix $dest "../" -}}
+
+{{- $res := "" -}}
+
+{{- if and $dest $isLocal -}}
+  {{- if $startsWithSlash -}}
+    {{- with or (.PageInner.Resources.Get $url.Path) (resources.Get $url.Path) -}}
+      {{- $res = . -}}
+      {{- $query := cond $url.RawQuery (printf "?%s" $url.RawQuery) "" -}}
+      {{- $fragment := cond $url.Fragment (printf "#%s" $url.Fragment) "" -}}
+      {{- $dest = printf "%s%s%s" .RelPermalink $query $fragment -}}
+    {{- else -}}
+      {{- $dest = (relURL (strings.TrimPrefix "/" $dest)) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with .PageInner.Resources.Get (strings.TrimPrefix "./" $url.Path) -}}
+      {{- $res = . -}}
+      {{- $query := cond $url.RawQuery (printf "?%s" $url.RawQuery) "" -}}
+      {{- $fragment := cond $url.Fragment (printf "#%s" $url.Fragment) "" -}}
+      {{- $dest = printf "%s%s%s" .RelPermalink $query $fragment -}}
+    {{- else -}}
+      {{- if and $isPage (not $startsWithRelative) -}}
+        {{ $dest = (printf "../%s" $dest) }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Intrinsic dimensions, only for raster resources that expose them. */ -}}
+{{- $dims := "" -}}
+{{- with $res -}}
+  {{- if eq .ResourceType "image" -}}
+    {{- $dims = printf ` width="%d" height="%d"` .Width .Height -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $attributes := "" -}}
+{{- range $key, $value := .Attributes -}}
+  {{- if $value -}}
+    {{- $pair := printf "%s=%q" $key ($value | transform.HTMLEscape) -}}
+    {{- $attributes = printf "%s %s" $attributes $pair -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $enableImageZoom -}}
+  {{- .Page.Store.Set "hasImageZoom" true -}}
+{{- end -}}
+
+{{- with .Title -}}
+  <figure>
+    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}"{{ $dims | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+    <figcaption>{{ . }}</figcaption>
+  </figure>
+{{- else -}}
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}"{{ $dims | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+{{- end -}}

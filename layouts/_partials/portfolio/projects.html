@@ -13,18 +13,7 @@
 
     <div class="p-grid">
       {{- range . }}
-        <a class="p-card" href="{{ .RelPermalink }}">
-          <h3 class="p-card-title">{{ .Title }}</h3>
-          <p class="p-card-desc">{{ .Params.summary | default .Summary | plainify }}</p>
-          <div class="p-card-foot">
-            {{- with .Params.status }}
-              <span class="p-status {{ if eq . "Archived" }}p-status-archived{{ end }}">{{ . }}</span>
-            {{- end }}
-            {{- range first 3 .Params.tech }}
-              <span class="p-tag">{{ . }}</span>
-            {{- end }}
-          </div>
-        </a>
+        {{ partial "portfolio/project-card.html" . }}
       {{- end }}
     </div>
   </div>

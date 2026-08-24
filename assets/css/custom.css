@@ -394,6 +394,14 @@ a.p-card:hover .p-card-title {
   color: var(--p-accent);
 }
 
+.p-row-desc {
+  flex: 1 1 100%;
+  min-width: 0;
+  font-size: 0.875rem;
+  color: var(--p-text-muted);
+  overflow-wrap: break-word;
+}
+
 .p-row-date {
   font-family: var(--p-mono);
   font-size: 0.8125rem;
@@ -404,6 +412,16 @@ a.p-card:hover .p-card-title {
 
 .p-home a {
   -webkit-tap-highlight-color: color-mix(in srgb, var(--p-accent) 20%, transparent);
+}
+
+.p-empty {
+  margin-top: 2rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--p-text-muted);
+  background-color: var(--p-bg-subtle);
+  border: 1px dashed var(--p-border);
+  border-radius: var(--p-radius);
 }
 
 /* --------------------------------------------------------------------------

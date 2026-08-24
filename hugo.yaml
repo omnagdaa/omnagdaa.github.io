@@ -53,16 +53,12 @@ menu:
       params:
         icon: github
 
-  sidebar:
-    - identifier: more
-      name: More
-      params:
-        type: separator
-      weight: 1
-    - identifier: resume
-      name: "Résumé ↗"
-      url: /resume.pdf
-      weight: 2
+  # Re-add once static/resume.pdf exists:
+  # sidebar:
+  #   - identifier: resume
+  #     name: "Résumé ↗"
+  #     url: /resume.pdf
+  #     weight: 1
 
 params:
   description: >-

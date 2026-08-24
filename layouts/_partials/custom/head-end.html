@@ -32,3 +32,10 @@
   {{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end -}}
   <script defer src="{{ $js.RelPermalink }}"></script>
 {{- end -}}
+
+{{/* Cursor spotlight + card glow. Inert on touch and under reduced motion. */}}
+{{- with resources.Get "js/pointer-fx.js" -}}
+  {{- $js := . -}}
+  {{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end -}}
+  <script defer src="{{ $js.RelPermalink }}"></script>
+{{- end -}}

@@ -40,6 +40,18 @@
   --p-shadow-lift: 0 2px 4px rgb(16 22 28 / 8%), 0 12px 28px rgb(16 22 28 / 10%);
 
   --p-step: 0.25rem;
+
+  /* Pointer effects. Sizes and strengths are tokens so both the page
+     spotlight and the per-card glow stay tunable from one place. */
+  --p-spot-size: 32rem;
+  --p-spot-alpha: 6%;
+  --p-glow-size: 16rem;
+  --p-glow-alpha: 9%;
+
+  /* Pointer position, written by assets/js/pointer-fx.js. The defaults park
+     the spotlight off-screen so nothing shows before the first move. */
+  --p-mx: -100vw;
+  --p-my: -100vh;
 }
 
 .dark {
@@ -63,6 +75,10 @@
 
   --p-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 12px rgb(0 0 0 / 30%);
   --p-shadow-lift: 0 2px 4px rgb(0 0 0 / 50%), 0 12px 28px rgb(0 0 0 / 45%);
+
+  /* Dark surfaces swallow light, so the same effect needs more strength. */
+  --p-spot-alpha: 10%;
+  --p-glow-alpha: 15%;
 }
 
 /* --------------------------------------------------------------------------
@@ -565,7 +581,9 @@ a.p-card:hover .p-card-title {
 .p-ascii-bg {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  /* -2 / -1 are explicit so the two background layers stack predictably
+     regardless of which script inserts its element first. */
+  z-index: -2;
   margin: 0;
   overflow: hidden;
 
@@ -597,6 +615,89 @@ a.p-card:hover .p-card-title {
 
 @media print {
   .p-ascii-bg {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Pointer effects
+
+   Two layers, both driven by CSS custom properties that JS writes on a
+   requestAnimationFrame tick (assets/js/pointer-fx.js):
+
+   1. .p-spotlight — a page-wide glow that follows the cursor. Fixed, behind
+      content, painted above the ASCII layer so it brightens that too.
+   2. .p-card glow — a local highlight tracking the pointer inside the
+      hovered card.
+
+   Both are gated on `hover: hover` and `pointer: fine`: on touch there is no
+   cursor to follow, so the markup and listeners never activate. Both are also
+   disabled under prefers-reduced-motion, since an element that chases the
+   pointer is motion regardless of how subtle it is.
+   -------------------------------------------------------------------------- */
+
+.p-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+  background: radial-gradient(
+    var(--p-spot-size) circle at var(--p-mx) var(--p-my),
+    color-mix(in srgb, var(--p-accent) var(--p-spot-alpha), transparent),
+    transparent 70%
+  );
+}
+
+.p-spotlight.is-active {
+  opacity: 1;
+}
+
+/* The local glow sits above the card's own background but below its text,
+   which is why the children are promoted to the positioned layer below. */
+a.p-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 220ms ease-out;
+  background: radial-gradient(
+    var(--p-glow-size) circle at var(--p-cx, 50%) var(--p-cy, 50%),
+    color-mix(in srgb, var(--p-accent) var(--p-glow-alpha), transparent),
+    transparent 65%
+  );
+}
+
+/* Card children are elements, so promoting them above the glow is safe.
+   Buttons are deliberately excluded: their label is a bare text node with
+   nothing to promote, so the glow would paint over the text. They already
+   have a background/border hover, which is enough. */
+a.p-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.p-card:hover::before,
+  a.p-card:focus-visible::before {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-spotlight {
+    display: none;
+  }
+
+  a.p-card::before {
+    transition: none;
+  }
+}
+
+@media print {
+  .p-spotlight {
     display: none;
   }
 }

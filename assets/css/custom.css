@@ -29,10 +29,24 @@
 
   /* Google Fonts loaded in layouts/_partials/custom/head-end.html.
      Fallback stacks are metric-similar to limit shift if they fail. */
-  --p-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system,
+  /* TESTING Mozilla Text (variable 200-700). To revert, swap the two
+     --p-sans lines below and drop Mozilla+Text from the Google Fonts href in
+     head-end.html.
+     Caveat: it ships no true italic, so `<em>` renders as a synthesised
+     oblique — worth checking in a writeup with emphasis in it. */
+  --p-sans: "Mozilla Text", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* --p-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
   --p-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, "Liberation Mono", monospace;
+
+  /* The ASCII backdrop is deliberately NOT --p-mono. Its geometry is baked in
+     at generation time (tools/ascii-bg.py CHAR_ASPECT = 0.5), so it only
+     lines up under a font with that advance ratio; a display face with
+     different metrics shears the art. Keep this pinned when testing fonts. */
+  --p-mono-art: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
 
   --p-radius: 10px;
   --p-radius-sm: 6px;
@@ -639,7 +653,7 @@ a.p-card:hover .p-card-title {
   display: grid;
   place-items: center;
 
-  font-family: var(--p-mono);
+  font-family: var(--p-mono-art);
   /* Width is cols x ~0.6em, so this keeps the art spanning the viewport;
      the vh term stops it collapsing on tall portrait screens. */
   font-size: max(1.667vw, 2.1vh);
@@ -1040,4 +1054,35 @@ a.p-card > * {
   .hextra-nav-container-blur {
     border-radius: 0.75rem;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   Hextra's footer is a tall grey band: py-12 (6rem of padding) plus mt-6 on
+   the copyright line, on a filled background. That reads as a second section
+   rather than a end-of-page rule. Slim it to a single quiet line.
+
+   These selectors carry one more element than Hextra's single-class utilities,
+   so they win on specificity without !important. Structure they depend on:
+   footer > [custom slot] > [width wrapper] > [flex col] > [copyright].
+   -------------------------------------------------------------------------- */
+.hextra-footer {
+  /* Replace the filled band with a hairline: the page background carries
+     through, so the ASCII layer stays continuous to the bottom edge. */
+  background: transparent;
+  border-top: 1px solid var(--p-border);
+}
+
+.hextra-footer > div:last-child {
+  padding-block: 0.875rem;
+}
+
+/* Kill the stacking margin above the copyright line. */
+.hextra-footer > div:last-child > div > div {
+  margin-top: 0;
+}
+
+/* The empty custom-footer slot still reserves space when unused. */
+.hextra-custom-footer:empty {
+  display: none;
 }

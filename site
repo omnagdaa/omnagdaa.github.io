@@ -27,7 +27,7 @@ Usage: ./site <command> [args]
 
   publish <path>     Flip draft: true -> false for a page
   drafts             List everything still unpublished
-  ascii [video]      Regenerate the ASCII background frames from a video
+  ascii [video]      Regenerate the background frames (default: video.mp4)
                      (default: content/projects/dumpscope/demo.mp4)
   build              Production build into public/
   check              Build, scan for broken links, verify mobile menu wiring
@@ -85,7 +85,12 @@ case "$cmd" in
     ;;
 
   ascii)
-    video="${1:-content/projects/dumpscope/demo.mp4}"
+    # video.mp4 at the repo root is THE source for the backdrop. It is
+    # gitignored (build input, not a deliverable), so keep a local copy.
+    # This defaulted to the DumpScope demo once and silently regenerated the
+    # background from the wrong clip — do not point it at project media.
+    video="${1:-video.mp4}"
+    [ -f "$video" ] || die "$video not found — the backdrop source is gitignored; restore your local copy"
     command -v ffmpeg >/dev/null || die "ffmpeg not found (sudo pacman -S ffmpeg)"
     python3 tools/ascii-bg.py "$video"
     info "rebuilt the background frames — commit assets/ascii/frames.json"

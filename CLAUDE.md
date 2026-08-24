@@ -45,7 +45,15 @@ with `./site ascii [video]` and commit the JSON.
 
 The source video (`video.mp4`) is **gitignored** — it is a build input, not a
 deliverable. Keep a local copy; regenerating needs it, serving the site does
-not.
+not. `./site ascii` defaults to it and now hard-fails if it is missing: the
+default once pointed at `content/projects/dumpscope/demo.mp4`, which silently
+regenerated the backdrop from the wrong clip.
+
+The generator **crops rows blank in every frame**. The source is framed with
+empty space at the top, which survives edge detection as dead rows; since the
+backdrop is centred, those rows shoved the art below centre (ink centred at
+65% down the box, versus 49% after cropping). The crop is computed across the
+whole sequence, never per frame, so nothing jitters.
 
 Edge detection rather than a brightness ramp: screen recordings are mostly
 flat regions and turn to featureless mush under plain luminance, whereas edges
@@ -165,6 +173,11 @@ class on `<html>`, so nothing can desync. Re-check the override on upgrades.
   step with `params.author.jobTitle`, which feeds the JSON-LD and social card.
 - `assets/js/ascii-bg.js` + `assets/ascii/frames.json` — background (generated)
 - `i18n/en.yaml` — footer copyright (it is an i18n string in Hextra, not a param)
+
+The footer is slimmed in `custom.css` from Hextra's tall grey band (`py-12`
+plus `mt-6`, ~136px) to a hairline-topped single line (~44px). Those overrides
+depend on the theme's footer structure — `footer > [custom slot] > [width
+wrapper] > [flex col] > [copyright]` — so re-check them on a Hextra upgrade.
 
 Two Hugo gotchas already hit here, worth remembering:
 

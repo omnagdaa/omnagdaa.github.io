@@ -63,6 +63,22 @@ def main() -> int:
             idx = (np.clip(a * 2.2, 0, 1) * (len(RAMP) - 1)).astype(int)
             frames.append("\n".join("".join(RAMP[v] for v in row) for row in idx))
 
+    # Crop rows that are blank in *every* frame. Source recordings are often
+    # letterboxed or have empty chrome at an edge, which survives edge
+    # detection as dead rows — and because the backdrop is centred, dead rows
+    # at the top shove all the visible art below centre. Cropping is done
+    # across the whole sequence, never per frame, so nothing jitters.
+    split = [f.split("\n") for f in frames]
+    ink = [any(line[r].strip() for line in split) for r in range(rows)]
+    if any(ink):
+        top = ink.index(True)
+        bot = len(ink) - 1 - ink[::-1].index(True)
+        if top or bot < rows - 1:
+            frames = ["\n".join(line[top:bot + 1]) for line in split]
+            print(f"cropped {top} blank row(s) from top, "
+                  f"{rows - 1 - bot} from bottom")
+            rows = bot - top + 1
+
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     # The still frame left on screen after the single animated pass: pick the

@@ -6,6 +6,9 @@
       <span>{{ $p.prompt | default "whoami" }}</span>
     </p>
     <h1 class="p-hero-title" id="hero-title">{{ $p.title | default site.Title }}</h1>
+    {{- with $p.role }}
+      <p class="p-hero-role">{{ . }}</p>
+    {{- end }}
     <p class="p-hero-lede">{{ $p.lede | default site.Params.description }}</p>
     <div class="p-hero-actions">
       {{- range $p.actions }}
@@ -15,5 +18,26 @@
         </a>
       {{- end }}
     </div>
+    {{- with $p.contact }}
+      {{/* Contact rail. Labels are visible text, not icon-only links: an
+           unlabelled icon is a guess for sighted users and a bare "link" for
+           screen readers. */}}
+      <ul class="p-hero-contact">
+        {{- range . }}
+          {{- $ext := strings.HasPrefix .url "http" -}}
+          <li>
+            <a href="{{ .url }}"
+               {{ if $ext }}target="_blank" rel="noopener"{{ end }}>
+              {{- with .icon }}
+                <span class="p-hero-contact-icon" aria-hidden="true">
+                  {{- partial "utils/icon.html" (dict "name" . "attributes" "height=16 width=16") -}}
+                </span>
+              {{- end }}
+              <span>{{ .name }}</span>
+            </a>
+          </li>
+        {{- end }}
+      </ul>
+    {{- end }}
   </div>
 </section>

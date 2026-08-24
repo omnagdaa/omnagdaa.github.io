@@ -17,5 +17,6 @@ _Add certifications here._
 
 ## Contact
 
+- Email: [omnagdaa@proton.me](mailto:omnagdaa@proton.me)
 - GitHub: [@omnagdaa](https://github.com/omnagdaa)
 - LinkedIn: [@omnagdaa](https://www.linkedin.com/in/omnagdaa/)

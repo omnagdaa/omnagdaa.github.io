@@ -73,9 +73,28 @@ params:
     Security engineering and DevOps — memory forensics, mobile security,
     tooling, and infrastructure automation.
 
+  # Social preview card. Hugo's opengraph template falls back to this for any
+  # page without its own image, so every shared link renders a real card
+  # instead of a blank one. Regenerate with ./site ogcard.
+  images:
+    - og-card.png
+
+  # Drives the JSON-LD Person block in _partials/custom/head-end.html.
+  author:
+    name: Om Nagda
+    jobTitle: Security Engineer & DevOps
+    email: omnagdaa@proton.me
+    # Add `locality:` / `country:` here to surface a location in search filters.
+    profiles:
+      - https://github.com/omnagdaa
+      - https://www.linkedin.com/in/omnagdaa/
+
   hero:
     prompt: whoami
     title: Om Nagda
+    # Shown directly under the name. Kept in step with author.jobTitle, which
+    # is what the JSON-LD and the social card both use.
+    role: Security Engineer & DevOps
     lede: >-
       Security engineer working across memory forensics, mobile security, and
       the DevOps side of shipping tooling — building the analysis software I
@@ -86,11 +105,23 @@ params:
         primary: true
       - name: Read Writeups
         url: /blog/
+    # Contact rail under the buttons. Recruiters land here first, so the route
+    # to reach you is on the landing page, not one click away in About.
+    contact:
+      - name: Email
+        url: mailto:omnagdaa@proton.me
+        icon: mail
       - name: GitHub
         url: https://github.com/omnagdaa
+        icon: github
+      - name: LinkedIn
+        url: https://www.linkedin.com/in/omnagdaa/
+        icon: linkedin
 
   navbar:
-    displayTitle: true
+    # Name is dropped from the bar; the logo stays so the "click to go home"
+    # affordance survives. Hextra keeps it a link either way.
+    displayTitle: false
     displayLogo: true
     logo:
       path: images/logo.svg

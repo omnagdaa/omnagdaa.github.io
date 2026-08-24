@@ -31,6 +31,7 @@ Usage: ./site <command> [args]
                      (default: content/projects/dumpscope/demo.mp4)
   build              Production build into public/
   check              Build, scan for broken links, verify mobile menu wiring
+  ogcard             Regenerate static/og-card.png (social share preview)
 
 Attachments: put images/videos inside the created folder, next to index.md,
 and reference them by bare filename. Nothing else to configure.
@@ -94,6 +95,10 @@ case "$cmd" in
     require_toolchain
     rm -rf public
     hugo --minify --gc
+    ;;
+
+  ogcard)
+    python3 tools/og-card.py
     ;;
 
   check)

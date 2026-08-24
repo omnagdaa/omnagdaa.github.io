@@ -209,6 +209,17 @@ samp {
   margin: 0 0 1rem;
 }
 
+/* Role sits between the name and the bio: the one line a recruiter reads
+   before deciding whether to keep reading. */
+.p-hero-role {
+  font-family: var(--p-mono);
+  font-size: clamp(1rem, 1.9vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--p-accent);
+  margin: 0 0 1.125rem;
+}
+
 .p-hero-lede {
   font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
   line-height: 1.65;
@@ -222,6 +233,43 @@ samp {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+.p-hero-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+}
+
+.p-hero-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--p-mono);
+  font-size: 0.875rem;
+  color: var(--p-text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.p-hero-contact a:hover {
+  color: var(--p-accent);
+  border-bottom-color: currentColor;
+}
+
+.p-hero-contact-icon {
+  display: inline-flex;
+  color: var(--p-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-hero-contact a {
+    transition: none;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -587,9 +635,9 @@ a.p-card:hover .p-card-title {
   margin: 0;
   overflow: hidden;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Grid so the two frame layers share one cell and overlap exactly. */
+  display: grid;
+  place-items: center;
 
   font-family: var(--p-mono);
   /* Width is cols x ~0.6em, so this keeps the art spanning the viewport;
@@ -605,10 +653,24 @@ a.p-card:hover .p-card-title {
   -webkit-user-select: none;
 }
 
+/* The two cross-dissolving frame layers: same grid cell, so they overlap
+   exactly. Only opacity changes, which the compositor handles without
+   repainting or reflowing the text. */
+.p-ascii-layer {
+  grid-area: 1 / 1;
+  white-space: pre;
+  /* Promote both layers once, up front. Without this the browser can
+     re-promote on every opacity change, which is the jank this replaced. */
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  /* The script already stops swapping frames; this also drops it further back
-     so the remaining still frame reads as texture, not content. */
-  .p-ascii-bg {
+  /* Nothing autoplays here, so what is normally an animation is a still
+     frame; drop it further back so it reads as texture rather than content.
+     If the visitor deliberately starts motion via the navbar control, it is
+     no longer incidental texture, so it returns to full strength. */
+  .p-ascii-bg:not(.is-playing) {
     opacity: 0.07;
   }
 }
@@ -931,5 +993,51 @@ a.p-card > * {
 
   a.p-card::after {
     transition: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Navbar — floating rounded bar
+   --------------------------------------------------------------------------
+   Hextra's navbar is a full-bleed sticky strip. Insetting it and rounding the
+   blur layer turns it into a floating pill.
+
+   The radius goes on .hextra-nav-container-blur (the absolutely-positioned
+   child that actually paints the background) rather than on the container
+   with overflow: hidden. overflow: hidden would clip the search results panel
+   and any menu that overflows the bar.
+   ------------------------------------------------------------------------ */
+.hextra-nav-container {
+  top: 0.625rem;
+  width: min(100% - 1.25rem, var(--p-nav-width, 76rem));
+  margin-inline: auto;
+}
+
+.hextra-nav-container-blur {
+  border-radius: 1rem;
+  border: 1px solid var(--p-border);
+  /* Hextra's default is a hard bottom hairline meant for a full-width strip;
+     a detached bar wants a soft drop shadow on all sides instead. */
+  box-shadow: 0 6px 24px -12px rgb(0 0 0 / 18%);
+}
+
+.dark .hextra-nav-container-blur {
+  box-shadow: 0 6px 24px -12px rgb(0 0 0 / 55%);
+}
+
+/* The bar sits inside its own inset, so the nav no longer needs the wide
+   gutter that kept it clear of the viewport edge. */
+.hextra-nav-container .hextra-max-navbar-width {
+  padding-inline: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .hextra-nav-container {
+    top: 0.375rem;
+    width: min(100% - 0.75rem, 100%);
+  }
+
+  .hextra-nav-container-blur {
+    border-radius: 0.75rem;
   }
 }

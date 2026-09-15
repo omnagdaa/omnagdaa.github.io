@@ -1,0 +1,61 @@
+{{ define "main" }}
+  {{/* Writeups index. Replaces Hextra's paginated blog list with a grouped,
+       scannable archive: someone landing here is either browsing the whole
+       body of work or hunting one specific writeup, and a 10-per-page
+       paginator serves neither. The rail carries the same index, so the two
+       stay in step. */}}
+  {{- $posts := where site.RegularPages "Section" "blog" -}}
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    {{ partial "portfolio/writeup-nav.html" (dict "context" .) }}
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        {{ partial "breadcrumb.html" (dict "page" . "enable" false) }}
+
+        <div class="content">
+          {{ with .Title }}<h1>{{ . }}</h1>{{ end }}
+          {{ .Content }}
+        </div>
+
+        {{- with $posts }}
+          {{- /* Tag filter rail: the second-most common way in, after date. */ -}}
+          {{- with site.Taxonomies.tags }}
+            <nav class="p-tagbar" aria-label="Browse writeups by tag">
+              {{- range $name, $taxonomy := . }}
+                <a class="p-tag p-tag-link" href="{{ (printf "tags/%s/" (urlize $name)) | relURL }}">
+                  {{ $name }}<span class="p-tag-count">{{ len $taxonomy.Pages }}</span>
+                </a>
+              {{- end }}
+            </nav>
+          {{- end }}
+
+          {{- range .GroupByDate "2006" }}
+            <section class="p-archive-year" aria-labelledby="year-{{ .Key }}">
+              <h2 class="p-archive-heading" id="year-{{ .Key }}">{{ .Key }}</h2>
+              <div class="p-rows">
+                {{- range .Pages }}
+                  <a class="p-row" href="{{ .RelPermalink }}">
+                    <span class="p-row-title">{{ .Title }}</span>
+                    <span class="p-row-meta">
+                      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format ":date_medium" .Date }}</time>
+                      <span>{{ .ReadingTime }} min</span>
+                    </span>
+                    {{- with partial "utils/page-description" . }}
+                      <span class="p-row-desc">{{ . }}</span>
+                    {{- end }}
+                  </a>
+                {{- end }}
+              </div>
+            </section>
+          {{- end }}
+        {{- else }}
+          <p class="p-empty">
+            Nothing published here yet. Work in progress lands on
+            <a href="{{ "projects/" | relURL }}">Projects</a> first, and longer
+            reference material lives under <a href="{{ "docs/" | relURL }}">Notes</a>.
+          </p>
+        {{- end }}
+      </main>
+    </article>
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div>
+  </div>
+{{ end }}

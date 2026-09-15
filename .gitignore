@@ -1,4 +1,8 @@
 # ---- Hugo build output ----
+# `hugo mod vendor` writes the Hextra source here for inspection. It is a
+# local aid, and leaving it in place changes module resolution.
+/_vendor/
+
 # gh-pages is built by CI from main; nothing generated belongs in source.
 /public/
 /resources/
@@ -15,6 +19,7 @@ hugo_stats.json
 
 # ---- Local agent / editor config ----
 .claude/
+CLAUDE.md
 .idea/
 .vscode/
 *.swp

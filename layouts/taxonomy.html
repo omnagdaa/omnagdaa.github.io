@@ -1,0 +1,34 @@
+{{ define "main" }}
+  {{/* All tags, as a browsable index. Hextra ships a bare list here; this
+       gives it the portfolio's chrome and, more usefully, a count per tag so
+       the weight of each topic is visible before clicking.
+
+       `.Data.Terms.ByCount` — not `.Pages.ByCount`. On a taxonomy page
+       `.Pages` is a plain page.Pages with no ordering helpers; the term
+       collection with its counts hangs off `.Data.Terms`. */}}
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    {{/* Renders the mobile drawer the navbar hamburger opens. Required even
+         though these pages have no sidebar of their own. */}}
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+    <main id="content" class="p-home hx:w-full hx:min-w-0 hx:break-words">
+    <section class="p-section">
+      <div class="p-wrap p-wrap-narrow">
+        <h1 class="p-page-title">{{ .Title }}</h1>
+        {{ with .Content }}<div class="content">{{ . }}</div>{{ end }}
+
+        {{- with .Data.Terms.ByCount }}
+          <nav class="p-tagbar p-tagbar-lg" aria-label="All tags">
+            {{- range . }}
+              <a class="p-tag p-tag-link" href="{{ .Page.RelPermalink }}">
+                {{ .Term }}<span class="p-tag-count">{{ .Count }}</span>
+              </a>
+            {{- end }}
+          </nav>
+        {{- else }}
+          <p class="p-empty">No tags yet — they appear here once writeups are published.</p>
+        {{- end }}
+      </div>
+    </section>
+    </main>
+  </div>
+{{ end }}

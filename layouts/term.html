@@ -1,0 +1,35 @@
+{{ define "main" }}
+  {{/* One tag's page. Same row treatment as the writeups archive, so moving
+       between "everything" and "everything tagged X" doesn't change how the
+       list reads. */}}
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    {{/* Renders the mobile drawer the navbar hamburger opens. Required even
+         though these pages have no sidebar of their own. */}}
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+    <main id="content" class="p-home hx:w-full hx:min-w-0 hx:break-words">
+    <section class="p-section">
+      <div class="p-wrap p-wrap-narrow">
+        <p class="p-backlink"><a href="{{ .Parent.RelPermalink }}">All tags</a></p>
+        <h1 class="p-page-title">{{ .Data.Term }}</h1>
+        <p class="p-page-sub">{{ len .Pages }} {{ cond (eq (len .Pages) 1) "page" "pages" }} tagged &ldquo;{{ .Data.Term }}&rdquo;</p>
+
+        <div class="p-rows">
+          {{- range .Pages }}
+            <a class="p-row" href="{{ .RelPermalink }}">
+              <span class="p-row-title">{{ .Title }}</span>
+              {{- with .Date }}
+                <span class="p-row-meta">
+                  <time datetime="{{ .Format "2006-01-02" }}">{{ time.Format ":date_medium" . }}</time>
+                </span>
+              {{- end }}
+              {{- with partial "utils/page-description" . }}
+                <span class="p-row-desc">{{ . }}</span>
+              {{- end }}
+            </a>
+          {{- end }}
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+{{ end }}

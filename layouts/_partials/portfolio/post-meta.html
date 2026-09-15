@@ -1,0 +1,29 @@
+{{- /* Byline for a writeup: when it was written, how long it takes to read,
+       and what it covers.
+
+       Items are separated by a CSS hairline rather than the usual "A · B · C"
+       middot join, so the row still parses as three distinct facts when the
+       tags wrap onto their own line on a narrow screen. */ -}}
+
+{{- $page := . -}}
+<div class="p-meta">
+  {{- with $page.Date }}
+    <time class="p-meta-item" datetime="{{ .Format "2006-01-02" }}">
+      {{- time.Format ":date_medium" . -}}
+    </time>
+  {{- end }}
+
+  {{- with $page.ReadingTime }}
+    <span class="p-meta-item">{{ . }} min read</span>
+  {{- end }}
+
+  {{- with $page.Params.tags }}
+    <ul class="p-meta-tags">
+      {{- range . }}
+        <li>
+          <a class="p-tag p-tag-link" href="{{ (printf "tags/%s/" (urlize .)) | relURL }}">{{ . }}</a>
+        </li>
+      {{- end }}
+    </ul>
+  {{- end }}
+</div>

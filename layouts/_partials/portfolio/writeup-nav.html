@@ -1,0 +1,63 @@
+{{- /* GitBook-style rail for the writeups section: every post, newest first,
+       grouped by year.
+
+       Why not Hextra's sidebar.html: it walks the page tree and orders
+       `ByWeight`. Writeups are dated, not weighted, so that ordering is
+       arbitrary for this section. Year grouping is the navigation people
+       actually use to find a writeup they half-remember.
+
+       The shell — classes, the mobile/desktop split, the drawer transform —
+       mirrors Hextra's sidebar.html deliberately: navbar.js toggles this
+       container by class name to open the mobile drawer, and custom.css
+       styles it. Re-check both on a Hextra upgrade. */ -}}
+
+{{- $page := .context -}}
+{{- $pageURL := strings.TrimSuffix "/" $page.RelPermalink -}}
+{{- $posts := where site.RegularPages "Section" "blog" -}}
+
+<aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+  {{- if (site.Params.search.enable | default true) }}
+    <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+      {{ partial "search.html" (dict "location" "sidebar") }}
+    </div>
+  {{- end }}
+
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    {{- /* Mobile drawer keeps the site-wide nav, exactly as other pages do.
+           Without this the hamburger opens an empty panel. */ -}}
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      {{ template "sidebar-main" (dict "context" site.Home "pageURL" $page.RelPermalink "page" $page "toc" true) }}
+      {{ template "sidebar-footer" }}
+    </ul>
+
+    {{- /* Desktop rail: the writeup index itself. */ -}}
+    <nav class="p-rail hx:max-md:hidden" aria-label="All writeups">
+      <a class="p-rail-root{{ if eq $pageURL (strings.TrimSuffix "/" (relURL "blog/")) }} is-current{{ end }}"
+         href="{{ "blog/" | relURL }}"
+         {{ if eq $pageURL (strings.TrimSuffix "/" (relURL "blog/")) }}aria-current="page"{{ end }}>
+        All writeups
+        <span class="p-rail-count">{{ len $posts }}</span>
+      </a>
+
+      {{- with $posts }}
+        {{- range .GroupByDate "2006" }}
+          <div class="p-rail-group">
+            <h2 class="p-rail-year">{{ .Key }}</h2>
+            <ul class="p-rail-list">
+              {{- range .Pages }}
+                {{- $active := eq $pageURL (strings.TrimSuffix "/" .RelPermalink) }}
+                <li>
+                  <a class="p-rail-link{{ if $active }} is-current{{ end }}"
+                     href="{{ .RelPermalink }}"
+                     {{ if $active }}aria-current="page"{{ end }}>{{ .Title }}</a>
+                </li>
+              {{- end }}
+            </ul>
+          </div>
+        {{- end }}
+      {{- else }}
+        <p class="p-rail-empty">No writeups published yet.</p>
+      {{- end }}
+    </nav>
+  </div>
+</aside>

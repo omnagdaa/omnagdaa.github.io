@@ -19,7 +19,6 @@ hugo_stats.json
 
 # ---- Local agent / editor config ----
 .claude/
-CLAUDE.md
 .idea/
 .vscode/
 *.swp

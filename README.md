@@ -52,7 +52,7 @@ Each line is one feature and where it lives.
 
 - **Design-token system** — every colour, font, radius, and shadow is a `--p-*` custom property, so light and dark are one definition apart (`assets/css/custom.css`).
 - **One-click light/dark** — replaces Hextra's three-item dropdown, sharing its storage key so the two can't desync (`assets/js/theme-switch.js`).
-- **ASCII backdrop** — an ambient animated field derived from a screen recording at build time, shipped as ~2 KB of JSON rather than video (`tools/ascii-bg.py`, `assets/js/ascii-bg.js`).
+- **ASCII hero field** — an animated field derived from a screen recording at build time, shipped as ~2 KB of JSON rather than video. Landing page only; reading pages stay clean (`tools/ascii-bg.py`, `assets/js/ascii-bg.js`).
 - **Motion pause control** — the backdrop autoplays, so WCAG 2.2.2 requires a way to stop it; the navbar button is it, and the choice persists.
 - **Reduced-motion support** — nothing autoplays under `prefers-reduced-motion`, but the control stays, because common desktop settings report it by default.
 - **Cursor spotlight and card glow** — pointer-tracked lighting, skipped entirely on touch and under reduced motion (`assets/js/pointer-fx.js`).

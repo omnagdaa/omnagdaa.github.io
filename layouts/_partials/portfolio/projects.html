@@ -4,11 +4,7 @@
 <section class="p-section" aria-labelledby="projects-title">
   <div class="p-wrap">
     <div class="p-section-head">
-      <div>
-        <span class="p-eyebrow" aria-hidden="true" translate="no">// projects</span>
-        <h2 class="p-section-title" id="projects-title">Things I&rsquo;ve Built</h2>
-      </div>
-      <a class="p-link-more" href="{{ "projects/" | relURL }}">All Projects</a>
+      <h2 class="p-section-title" id="projects-title">Things I&rsquo;ve Built</h2>
     </div>
 
     <div class="p-grid">
@@ -16,6 +12,8 @@
         {{ partial "portfolio/project-card.html" . }}
       {{- end }}
     </div>
+
+    <p class="p-section-foot"><a class="p-link-more" href="{{ "projects/" | relURL }}">All projects</a></p>
   </div>
 </section>
 {{- end }}

@@ -41,7 +41,61 @@ Easing is smoothstep, not linear: linear lingers at 50/50 opacity where both
 glyph sets are equally visible and the art reads as doubled. `step()` is pure
 — it must stay that way, since it is called twice per transition.
 
-The sequence loops continuously at 10% opacity. Because that is autoplay
+## Where it appears
+
+The landing page, and nowhere else. It used to load on every page at a flat
+10%, which put moving texture behind body prose on every writeup and note —
+boldness spread thin enough to be wallpaper, and a small tax on legibility
+everywhere it appeared.
+
+The gate is `{{ if .IsHome }}` around the script tag in
+`_partials/custom/head-end.html`, not a CSS rule. That matters: the script is
+what creates the element *and* reveals the navbar pause button. Hiding the art
+in CSS would have left every other page shipping a control with nothing to
+control.
+
+Being a hero element rather than a background changes two things:
+
+- `position: absolute`, not `fixed`, so it scrolls away with the hero. Fixed
+  would have pinned the mask to the viewport, and the art would never have
+  gone anywhere.
+- `height: min(100vh, 44rem)`. The layer centres its art, so a full-viewport
+  box on a tall window put the densest part of the field *below* the hero
+  text and behind the section after it.
+
+## Opacity is set by contrast, not taste
+
+A two-axis mask clears the art off the text column on wide screens and fades
+it out before the sections below:
+
+```css
+mask-image:
+  linear-gradient(to right, transparent 56%, #000 80%),
+  linear-gradient(to bottom, #000 58%, transparent 96%);
+mask-composite: intersect;
+```
+
+Where the mask clears the text, the ground behind the words is the flat page
+colour and opacity costs nothing — hence 0.26 on wide screens.
+
+Narrow screens have no empty column to fill, so the art really does sit behind
+the words and the cap comes back. Worst case is a dense glyph directly behind
+the smallest text, and the floor is 4.6:1:
+
+| | opacity | contrast |
+| --- | --- | --- |
+| light, faint `#626c77` on white | 0.11 | 4.61 |
+| dark, faint `#7b8b99` on `#0b0f14` | 0.10 | 4.65 |
+
+Those two numbers are why the narrow values are what they are. **Changing any
+opacity means recomputing both.** One step up — 0.12 in light — lands at 4.53
+and fails.
+
+Cascade order in `custom.css` is load-bearing: the narrow-screen block comes
+*after* the reduced-motion block so it wins on a phone. Reversed, a phone with
+reduced motion inherits the desktop value and fails the check.
+
+The sequence loops continuously. Because that is autoplay
 motion lasting over five seconds, WCAG 2.2.2 requires a pause mechanism: the
 navbar pause button is it, and it is load-bearing — if no control is found on
 the page the script leaves playback stopped rather than shipping motion nobody
@@ -57,7 +111,5 @@ opt-in is stored as `playing-reduced`, distinct from `playing`, so it can
 never be inherited by a visitor who did not ask for it; `.is-playing` on the
 container is what tells CSS the difference.
 
-Text colours are tuned against the *blended* background, not the flat one:
-`--p-text-faint` sits at 4.67:1 (light) and 4.65:1 (dark) worst case, with a
-dense glyph directly behind it. Raising the opacity again means re-checking
-those two values.
+Text colours are tuned against the *blended* background, not the flat one.
+See the contrast table above for the current worst-case figures.

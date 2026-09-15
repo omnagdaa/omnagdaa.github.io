@@ -163,21 +163,8 @@ samp {
   margin: 0;
 }
 
-/* Small monospace section marker, e.g. "// projects" */
-.p-eyebrow {
-  display: block;
-  font-family: var(--p-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--p-accent);
-  margin-bottom: 0.5rem;
-}
-
 .p-link-more {
-  font-family: var(--p-mono);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--p-text-muted);
   text-decoration: none;
   white-space: nowrap;
@@ -188,8 +175,18 @@ samp {
   color: var(--p-accent);
 }
 
-.p-link-more::after {
-  content: " →";
+/* The arrow that used to be glued on here was doing a link's job. An
+   underline does it without borrowing the convention of every other
+   generated page, and it survives being read aloud. */
+.p-link-more {
+  text-decoration: underline;
+  text-decoration-color: var(--p-border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+}
+
+.p-link-more:hover {
+  text-decoration-color: currentColor;
 }
 
 /* --------------------------------------------------------------------------
@@ -482,13 +479,14 @@ a.p-card:hover .p-card-title {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
 }
 
+/* "Security", "Languages" and the rest are categories a person chose, not
+   output a machine produced, so they lose the mono face and the caps for the
+   same reason the section eyebrows did. The tag pills beneath them stay mono:
+   those are tool names, which is exactly what the terminal voice is for. */
 .p-stack-group h3 {
-  font-family: var(--p-mono);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--p-text-faint);
+  color: var(--p-text);
   margin: 0 0 0.75rem;
 }
 
@@ -648,8 +646,19 @@ a.p-card:hover .p-card-title {
    -------------------------------------------------------------------------- */
 
 .p-ascii-bg {
-  position: fixed;
-  inset: 0;
+  /* absolute, not fixed: the art belongs to the hero, so it scrolls away with
+     it. Fixed positioning kept it pinned to the viewport, which meant the
+     mask below would have stayed at the top of the screen while you read
+     section four — the art would never have gone anywhere. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Capped rather than a flat 100vh: the layer centres its art, so on a tall
+     window a full-viewport box put the densest part of the field *below* the
+     hero text and behind the section after it. 44rem keeps the mass beside
+     the words it belongs to. */
+  height: min(100vh, 44rem);
   /* -2 / -1 are explicit so the two background layers stack predictably
      regardless of which script inserts its element first. */
   z-index: -2;
@@ -667,11 +676,31 @@ a.p-card:hover .p-card-title {
   line-height: 1.25;
   white-space: pre;
   color: var(--p-accent);
-  opacity: 0.1;
+
+  /* Masked out from behind the text and faded before the sections below.
+     Two consequences, and both are the point: the art stops competing with
+     prose, and where it is the only thing on screen it no longer has to
+     whisper — hence 0.26 where the old sitewide value was 0.10.
+
+     The right-hand fade is also what fills the dead half of the hero. The
+     identity block is measure-limited to ~34rem, so on a wide screen the
+     remaining space used to be empty. */
+  opacity: 0.26;
+  mask-image:
+    linear-gradient(to right, transparent 56%, #000 80%),
+    linear-gradient(to bottom, #000 58%, transparent 96%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
 
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Dark's accent is a far brighter teal on a near-black ground, so the same
+   alpha reads roughly twice as loud. */
+.dark .p-ascii-bg {
+  opacity: 0.2;
 }
 
 /* The two cross-dissolving frame layers: same grid cell, so they overlap
@@ -686,13 +715,51 @@ a.p-card:hover .p-card-title {
   backface-visibility: hidden;
 }
 
+/* Opacity is capped by contrast, not taste. Worst case is a dense glyph
+   sitting directly behind the smallest text, and the floor is 4.6:1:
+
+     light  faint #626c77 on white  @ 0.11 -> 4.61
+     dark   faint #7b8b99 on #0b0f14 @ 0.10 -> 4.65
+
+   Those two numbers are why the narrow values below are what they are.
+   Re-run the check if you change any of them.
+
+   Wide screens escape the cap entirely, because there the horizontal mask
+   clears the art off the text column — the ground behind the words is the
+   flat page colour, so 0.26 costs nothing.
+
+   Order matters below: the narrow-screen block is last so it wins over the
+   reduced-motion block on a phone. Reversed, a phone with reduced motion
+   would land on the desktop value and fail the check above. */
+
 @media (prefers-reduced-motion: reduce) {
-  /* Nothing autoplays here, so what is normally an animation is a still
-     frame; drop it further back so it reads as texture rather than content.
-     If the visitor deliberately starts motion via the navbar control, it is
-     no longer incidental texture, so it returns to full strength. */
+  /* Nothing autoplays, so what is normally an animation is a still frame.
+     Drop it back so it reads as texture rather than content; if the visitor
+     deliberately starts motion from the navbar it is no longer incidental,
+     and returns to full strength. */
   .p-ascii-bg:not(.is-playing) {
-    opacity: 0.07;
+    opacity: 0.14;
+  }
+
+  .dark .p-ascii-bg:not(.is-playing) {
+    opacity: 0.11;
+  }
+}
+
+@media (max-width: 60rem) {
+  /* No empty right-hand column to fill at this width, so the horizontal mask
+     has nothing to do and would crop the art to a sliver directly behind the
+     text. Vertical fade only, and quiet enough to clear the contrast floor,
+     because here the art really is behind the words rather than beside them. */
+  .p-ascii-bg,
+  .p-ascii-bg:not(.is-playing) {
+    opacity: 0.11;
+    mask-image: linear-gradient(to bottom, #000 46%, transparent 92%);
+  }
+
+  .dark .p-ascii-bg,
+  .dark .p-ascii-bg:not(.is-playing) {
+    opacity: 0.1;
   }
 }
 
@@ -1338,4 +1405,10 @@ a.p-card > * {
    a foot away from the title it belongs to. */
 .p-wrap-narrow {
   max-width: 56rem;
+}
+
+/* The section's own "see everything" link, under the content rather than
+   opposite the heading. */
+.p-section-foot {
+  margin: 1.5rem 0 0;
 }

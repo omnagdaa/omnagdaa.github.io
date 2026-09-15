@@ -2,6 +2,53 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-15 — Design pass: concentrate the backdrop, retire the template chrome
+
+### Changed
+
+- **The ASCII field is a hero element now, not sitewide texture.** It loaded
+  on every page at a flat 10%, which put moving art behind body prose on every
+  writeup and note. It now loads on the landing page only, masked off the text
+  column and faded out before the sections below — so it stops competing with
+  reading, and where it *is* the only thing on screen it no longer has to
+  whisper (0.26 on wide screens against the old 0.10).
+
+  Gated by `{{ if .IsHome }}` around the script rather than hidden in CSS: the
+  script creates both the element and the navbar pause button, so a CSS-only
+  hide would have left every other page with a control and nothing to control.
+  Reading pages also stop fetching `frames.json` entirely.
+
+- **Monospace now means one thing: machine output.** It was doing seven jobs —
+  prompt, role, section eyebrows, tags, dates, counts, "read more" links —
+  which is monospace as a generic small-label face. It keeps commands, counts,
+  timestamps and tool names, and loses the decorative labels. Setting a
+  human-authored heading in the machine's voice is a category error.
+
+- **Section eyebrows (`// projects`) removed.** A tracked-out all-caps mono
+  label above every heading is template chrome; the hairline above each
+  section already marks the boundary it was pretending to mark.
+
+- **Stack group labels** lose the mono face and the caps for the same reason.
+  The tag pills under them stay mono — those are tool names.
+
+- **The `→` glued to "All projects" is gone**, replaced by an underline. The
+  arrow was doing a link's job, and it survives being read aloud badly.
+
+- **"All projects" moved below its content.** Pinned to the far right of a
+  72rem section header, it sat opposite content occupying only the left third
+  and read as belonging to nothing.
+
+### Fixed
+
+- **Contrast regression caught before it shipped.** Raising the backdrop
+  opacity put light-theme faint text at 4.48:1, under AA and under the 4.67
+  the notes recorded. Narrow-screen values are now capped at 0.11 (light) and
+  0.10 (dark), verified at 4.61 and 4.65.
+- **Cascade bug in the same block** — the reduced-motion rule sat after the
+  narrow-screen rule, so a phone with reduced motion would have inherited the
+  desktop opacity and failed that check. Order is now load-bearing and
+  documented.
+
 ## 2026-09-15 — Writeup reading experience, tag browsing, docs split
 
 ### Fixed

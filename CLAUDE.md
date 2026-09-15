@@ -65,7 +65,6 @@ versions, and only `site.Data` works on both.
 | --- | --- |
 | Hextra overrides, layouts, `_partials/`, a theme upgrade | `docs/hextra-overrides.md` |
 | `tools/ascii-bg.py`, `assets/js/ascii-bg.js`, motion toggle | `docs/ascii-background.md` |
-| `assets/js/pointer-fx.js`, `--p-spot-*` / `--p-glow-*` | `docs/pointer-effects.md` |
 | `params.author`, `head-end.html`, `tools/og-card.py` | `docs/seo-and-social.md` |
 
 These carry the *why* behind decisions that look arbitrary and are expensive

@@ -9,14 +9,17 @@
    ========================================================================== */
 
 :root {
-  --p-bg: #ffffff;
-  --p-bg-subtle: #f6f8fa;
-  --p-surface: #ffffff;
-  --p-border: #d8dee4;
-  --p-border-strong: #b9c1c9;
+  /* Paper, not white. Cool and faintly green so it sits with the teal —
+     deliberately not a warm cream. The surface is the sheet that lies ON the
+     paper, which is what separates a card now that nothing casts a shadow. */
+  --p-bg: #f7f8f6;
+  --p-bg-subtle: #edefeb;
+  --p-surface: #fdfdfc;
+  --p-border: #dcdfd8;
+  --p-border-strong: #b6bcb2;
   --p-text: #10161c;
   --p-text-muted: #55606b;
-  /* Passes AA even under the 10% ASCII overlay: 4.67:1 worst case. */
+  /* Contrast floor under the ASCII field — see docs/ascii-background.md. */
   --p-text-faint: #626c77;
 
   --p-accent: #0d7d74;
@@ -50,22 +53,8 @@
 
   --p-radius: 10px;
   --p-radius-sm: 6px;
-  --p-shadow: 0 1px 2px rgb(16 22 28 / 6%), 0 4px 12px rgb(16 22 28 / 4%);
-  --p-shadow-lift: 0 2px 4px rgb(16 22 28 / 8%), 0 12px 28px rgb(16 22 28 / 10%);
 
   --p-step: 0.25rem;
-
-  /* Pointer effects. Sizes and strengths are tokens so both the page
-     spotlight and the per-card glow stay tunable from one place. */
-  --p-spot-size: 32rem;
-  --p-spot-alpha: 6%;
-  --p-glow-size: 16rem;
-  --p-glow-alpha: 9%;
-
-  /* Pointer position, written by assets/js/pointer-fx.js. The defaults park
-     the spotlight off-screen so nothing shows before the first move. */
-  --p-mx: -100vw;
-  --p-my: -100vh;
 }
 
 .dark {
@@ -76,7 +65,7 @@
   --p-border-strong: #33465c;
   --p-text: #e6edf3;
   --p-text-muted: #9bacbf;
-  /* Passes AA even under the 10% ASCII overlay: 4.65:1 worst case. */
+  /* Contrast floor under the ASCII field — see docs/ascii-background.md. */
   --p-text-faint: #7b8b99;
 
   --p-accent: #3ddbc7;
@@ -86,20 +75,48 @@
 
   --p-warn: #f0b429;
   --p-warn-bg: #2a2109;
-
-  --p-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 12px rgb(0 0 0 / 30%);
-  --p-shadow-lift: 0 2px 4px rgb(0 0 0 / 50%), 0 12px 28px rgb(0 0 0 / 45%);
-
-  /* Dark surfaces swallow light, so the same effect needs more strength. */
-  --p-spot-alpha: 10%;
-  --p-glow-alpha: 15%;
 }
 
 /* --------------------------------------------------------------------------
    Typography
    -------------------------------------------------------------------------- */
 
+/* Two defects the theme leaves open, and they show up together.
+
+   Hextra paints the page background on <body>. Nothing paints <html>, so the
+   overscroll area past the end of a long page — and the scrollbar gutter
+   beside it — fall through to the browser's own canvas instead of the page
+   colour. Nothing declared `color-scheme` either, so that canvas and the
+   scrollbar render at the UA default rather than following the theme, which
+   is why a black band shows on the right and below the content and does not
+   change when the theme does. Long pages (projects, a writeup) hit it first
+   simply because they are the pages that scroll.
+
+   Painting <html> fixes the band; color-scheme fixes the scrollbar, the
+   overscroll canvas and every native control in one declaration. */
+html {
+  background-color: var(--p-bg);
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Body must be transparent, and that is a consequence of the rule above, not
+   a style choice.
+
+   CSS propagates a background to the canvas from <html>, and only falls back
+   to <body> when the root's background is transparent. Hextra sets
+   `body { background-color: ... }` and relies on exactly that fallback. The
+   moment <html> gets a background of its own, body's stops being propagated
+   and becomes an ordinary background box — which paints *above* negative
+   z-index children, so it covered the ASCII field completely.
+
+   Handing the page colour to <html> and clearing it here keeps one painted
+   surface: it covers the overscroll area, and nothing occludes the backdrop. */
 body {
+  background-color: transparent;
   font-family: var(--p-sans);
   font-feature-settings: "cv05" 1, "ss01" 1;
   -webkit-font-smoothing: antialiased;
@@ -351,9 +368,8 @@ samp {
   background-color: var(--p-surface);
   border: 1px solid var(--p-border);
   border-radius: var(--p-radius);
-  box-shadow: var(--p-shadow);
   text-decoration: none;
-  transition-property: border-color, box-shadow, transform;
+  transition-property: border-color, background-color;
   transition-duration: 180ms;
 }
 
@@ -376,11 +392,12 @@ a.p-card::after {
   transition: transform 220ms ease-out;
 }
 
+/* The lift and the drop shadow went with the rest of the float. A sheet on
+   paper announces itself by edge and tone, so hover moves both. */
 a.p-card:hover,
 a.p-card:focus-visible {
   border-color: var(--p-accent-border);
-  box-shadow: var(--p-shadow-lift);
-  transform: translateY(-2px);
+  background-color: var(--p-bg);
 }
 
 a.p-card:hover::after,
@@ -976,87 +993,16 @@ nav.hextra-pager a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   Pointer effects
+   Pointer effects — removed
 
-   Two layers, both driven by CSS custom properties that JS writes on a
-   requestAnimationFrame tick (assets/js/pointer-fx.js):
+   A cursor-tracking spotlight and a per-card radial glow used to live here,
+   both painted as radial-gradient washes and driven by assets/js/pointer-fx.js.
+   Both are gone: a gradient chasing the pointer is the opposite of a flat
+   sheet, and dropping them takes a script, two listeners and a per-frame
+   custom-property write off every page.
 
-   1. .p-spotlight — a page-wide glow that follows the cursor. Fixed, behind
-      content, painted above the ASCII layer so it brightens that too.
-   2. .p-card glow — a local highlight tracking the pointer inside the
-      hovered card.
-
-   Both are gated on `hover: hover` and `pointer: fine`: on touch there is no
-   cursor to follow, so the markup and listeners never activate. Both are also
-   disabled under prefers-reduced-motion, since an element that chases the
-   pointer is motion regardless of how subtle it is.
+   The tokens they read (--p-spot-*, --p-glow-*) went with them.
    -------------------------------------------------------------------------- */
-
-.p-spotlight {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 400ms ease-out;
-  background: radial-gradient(
-    var(--p-spot-size) circle at var(--p-mx) var(--p-my),
-    color-mix(in srgb, var(--p-accent) var(--p-spot-alpha), transparent),
-    transparent 70%
-  );
-}
-
-.p-spotlight.is-active {
-  opacity: 1;
-}
-
-/* The local glow sits above the card's own background but below its text,
-   which is why the children are promoted to the positioned layer below. */
-a.p-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 220ms ease-out;
-  background: radial-gradient(
-    var(--p-glow-size) circle at var(--p-cx, 50%) var(--p-cy, 50%),
-    color-mix(in srgb, var(--p-accent) var(--p-glow-alpha), transparent),
-    transparent 65%
-  );
-}
-
-/* Card children are elements, so promoting them above the glow is safe.
-   Buttons are deliberately excluded: their label is a bare text node with
-   nothing to promote, so the glow would paint over the text. They already
-   have a background/border hover, which is enough. */
-a.p-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  a.p-card:hover::before,
-  a.p-card:focus-visible::before {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .p-spotlight {
-    display: none;
-  }
-
-  a.p-card::before {
-    transition: none;
-  }
-}
-
-@media print {
-  .p-spotlight {
-    display: none;
-  }
-}
 
 /* --------------------------------------------------------------------------
    Accessibility & motion
@@ -1106,13 +1052,20 @@ a.p-card > * {
 .hextra-nav-container-blur {
   border-radius: 1rem;
   border: 1px solid var(--p-border);
-  /* Hextra's default is a hard bottom hairline meant for a full-width strip;
-     a detached bar wants a soft drop shadow on all sides instead. */
-  box-shadow: 0 6px 24px -12px rgb(0 0 0 / 18%);
+
+  /* Hextra frosts this bar: backdrop-filter: blur() over a background mixed
+     to 85% transparent. Both go. Frosted glass is the one material paper is
+     not, and a translucent bar smears whatever happens to scroll under it.
+     The shadow goes too — a hairline already separates the bar. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background-color: var(--p-surface);
+  box-shadow: none;
 }
 
 .dark .hextra-nav-container-blur {
-  box-shadow: 0 6px 24px -12px rgb(0 0 0 / 55%);
+  background-color: var(--p-surface);
+  box-shadow: none;
 }
 
 /* The bar sits inside its own inset, so the nav no longer needs the wide

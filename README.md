@@ -55,7 +55,6 @@ Each line is one feature and where it lives.
 - **ASCII hero field** — an animated field derived from a screen recording at build time, shipped as ~2 KB of JSON rather than video. Landing page only; reading pages stay clean (`tools/ascii-bg.py`, `assets/js/ascii-bg.js`).
 - **Motion pause control** — the backdrop autoplays, so WCAG 2.2.2 requires a way to stop it; the navbar button is it, and the choice persists.
 - **Reduced-motion support** — nothing autoplays under `prefers-reduced-motion`, but the control stays, because common desktop settings report it by default.
-- **Cursor spotlight and card glow** — pointer-tracked lighting, skipped entirely on touch and under reduced motion (`assets/js/pointer-fx.js`).
 
 ### Publishing
 
@@ -77,7 +76,6 @@ changing that subsystem:
 | --- | --- |
 | `docs/hextra-overrides.md` | Every theme override and what breaks on upgrade |
 | `docs/ascii-background.md` | Backdrop generation, playback, and accessibility |
-| `docs/pointer-effects.md` | Spotlight and card glow, and their performance rules |
 | `docs/seo-and-social.md` | Identity, JSON-LD, and the share card |
 
 `docs/` is repository documentation. The site's own Notes section is

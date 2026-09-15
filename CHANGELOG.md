@@ -2,6 +2,53 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-15 — Paper ground, and the black band on long pages
+
+### Fixed
+
+- **A black band on the right and below the content of any long page**, which
+  did not change when the theme did. Two causes, one symptom:
+
+  Hextra paints the page background on `<body>` and nothing painted `<html>`,
+  so the scrollbar gutter and the overscroll area past the end of a page fell
+  through to the browser's own canvas. Nothing declared `color-scheme` either,
+  so that canvas and the scrollbar rendered at the UA default instead of
+  following the theme. Projects and writeups hit it first because they are the
+  pages long enough to scroll.
+
+  `<html>` now paints the page colour and declares `color-scheme`, which fixes
+  the band, the scrollbar, and every native control together.
+
+- **`<body>` is now explicitly transparent**, and that is load-bearing rather
+  than cosmetic. CSS propagates the canvas background from `<html>` and only
+  falls back to `<body>` when the root is transparent — which is the fallback
+  Hextra was relying on. Giving `<html>` a background turned body's into an
+  ordinary background box that paints above negative z-index children, which
+  hid the ASCII field completely until body was cleared.
+
+### Changed
+
+- **Paper ground.** `--p-bg` moves off pure white to `#f7f8f6` — cool and
+  faintly green so it sits with the teal, deliberately not a warm cream. Cards
+  were white on white, separated only by a shadow; on paper they separate by
+  being a lighter sheet, so the shadow has nothing left to do.
+
+- **The navbar is no longer frosted glass.** Hextra applies `backdrop-filter:
+  blur()` over a background mixed to 85% transparent. Both are overridden to an
+  opaque surface with a hairline. Frosted glass is the one material paper is
+  not, and a translucent bar smears whatever scrolls under it.
+
+- **Both decorative gradients removed**, along with the script that drove them.
+  The cursor spotlight and the per-card radial glow were `radial-gradient`
+  washes fed by per-frame custom-property writes from `assets/js/pointer-fx.js`.
+  A gradient chasing the pointer is the opposite of a flat sheet, and dropping
+  them takes a script and two listeners off every page. `--p-spot-*`,
+  `--p-glow-*`, `--p-shadow` and `--p-shadow-lift` went with them, as did
+  `docs/pointer-effects.md`.
+
+- **Card hover** loses the 2px lift and the drop shadow; it moves edge and tone
+  instead.
+
 ## 2026-09-15 — Design pass: concentrate the backdrop, retire the template chrome
 
 ### Changed

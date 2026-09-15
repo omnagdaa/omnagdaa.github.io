@@ -44,8 +44,13 @@ sidebar partial that the hamburger opens.
 - `layouts/taxonomy.html`, `layouts/term.html` — tag browsing
 - `assets/css/custom.css` — design system, all classes `p-` prefixed
 - `data/stack.yaml` — homepage skills section
+- `content/_index.md` — the bio. This *is* the About page: it was folded into
+  the landing page, and `/about/` is an alias redirecting here. The navbar's
+  About entry is the `/#about` anchor, not a page reference.
 - `params.hero` in `hugo.yaml` — landing intro. Keep `role` in step with
   `params.author.jobTitle`, which feeds the JSON-LD and the social card.
+  There is deliberately no `lede`: the bio renders directly beneath the hero,
+  so a lede would state the same thing twice a few pixels apart.
 - `i18n/en.yaml` — footer copyright (an i18n string in Hextra, not a param)
 
 ## Two Hugo traps already hit here

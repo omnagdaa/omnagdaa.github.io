@@ -43,7 +43,8 @@ Each line is one feature and where it lives.
 
 ### Landing page
 
-- **Terminal-framed hero** — name, role, one-paragraph bio, and a contact rail that puts email, GitHub, and LinkedIn on the first page a recruiter sees (`layouts/_partials/portfolio/hero.html`).
+- **Terminal-framed hero** — name, role, and a contact rail putting email, GitHub, and LinkedIn on the first page a recruiter sees (`layouts/_partials/portfolio/hero.html`).
+- **Bio on the landing page** — the About page is the home page; `/about/` redirects here and the navbar entry is an anchor (`content/_index.md`).
 - **Project cards** — title, summary, status, and tech tags per project (`layouts/_partials/portfolio/project-card.html`).
 - **Skills grid** — driven entirely by `data/stack.yaml`; edit the YAML, not the template.
 - **Latest writeups and notes** — both sections link through to their full index, and each hides itself rather than rendering empty (`writeups.html`, `notes.html`).

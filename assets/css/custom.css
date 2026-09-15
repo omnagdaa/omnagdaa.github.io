@@ -1365,3 +1365,29 @@ nav.hextra-pager a:hover {
 .p-section-foot {
   margin: 1.5rem 0 0;
 }
+
+/* --------------------------------------------------------------------------
+   Landing-page bio
+   -------------------------------------------------------------------------- */
+
+/* The page wrapper is 72rem, which is right for a card grid and far too wide
+   a measure for prose. This is the only block of running text on the landing
+   page, so it gets a reading width of its own. */
+.p-prose {
+  max-width: 42rem;
+}
+
+/* The bio needs a heading for the section's accessible name and for anyone
+   navigating by headings, but it does not need a visible "About" label — the
+   prose introduces itself. */
+.p-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

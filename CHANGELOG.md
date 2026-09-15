@@ -2,6 +2,32 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-15 — About becomes the landing page
+
+### Changed
+
+- **The About page is now the home page.** Its content moved to
+  `content/_index.md` and renders directly under the hero, above Projects.
+  `/about/` is a Hugo alias redirecting to `/`, so existing links and
+  bookmarks still resolve, and the navbar's About entry is the `/#about`
+  anchor rather than a page reference.
+
+  The hero stays on top so name, role and the contact rail still resolve in a
+  30-second scan, and Projects, Writeups and Notes still follow the bio — the
+  work is further down the page than it was, but it is still on it.
+
+- **The duplicate bio is gone.** `params.hero.lede` and the opening paragraph
+  of About said the same thing in different words. With the bio now sitting a
+  few pixels under the hero, that read as an oversight rather than a summary,
+  so the lede was removed and the hero partial now only renders one if a
+  `lede` is explicitly set.
+
+- **Empty Experience and Certifications headings deleted** rather than carried
+  over. They held a single `_Not yet written up._` line each, which is
+  tolerable one click away and not tolerable as the first thing a visitor
+  reads. `content/_index.md` carries a commented-out template for both — adding
+  them back is ordinary markdown, with no template change.
+
 ## 2026-09-15 — Paper ground, and the black band on long pages
 
 ### Fixed

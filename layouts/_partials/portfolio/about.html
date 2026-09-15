@@ -1,0 +1,13 @@
+{{- /* The bio, straight from content/_index.md.
+
+       This section is why the About page no longer exists: its content is the
+       landing page now. The hero above carries the name, role and contact rail
+       so a 30-second scan still resolves before this prose starts. */ -}}
+{{- with .Content }}
+<section class="p-section" id="about" aria-labelledby="about-title">
+  <div class="p-wrap">
+    <h2 class="p-section-title p-visually-hidden" id="about-title">About</h2>
+    <div class="content p-prose">{{ . }}</div>
+  </div>
+</section>
+{{- end }}

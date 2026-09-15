@@ -40,8 +40,10 @@ menu:
     - name: Notes
       pageRef: /docs
       weight: 3
+    # About is a section of the home page now, not a page. The anchor keeps the
+    # affordance working from anywhere on the site.
     - name: About
-      pageRef: /about
+      url: /#about
       weight: 4
     - name: Search
       weight: 5
@@ -95,10 +97,9 @@ params:
     # Shown directly under the name. Kept in step with author.jobTitle, which
     # is what the JSON-LD and the social card both use.
     role: Security Engineer & DevOps
-    lede: >-
-      Security engineer working across memory forensics, mobile security, and
-      the DevOps side of shipping tooling — building the analysis software I
-      wanted to exist.
+    # No lede: the bio in content/_index.md renders directly under the hero,
+    # and two versions of the same sentence a few pixels apart read as an
+    # oversight. Set this only if the hero is ever used without that bio.
     actions:
       - name: View Projects
         url: /projects/

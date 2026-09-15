@@ -9,7 +9,12 @@
     {{- with $p.role }}
       <p class="p-hero-role">{{ . }}</p>
     {{- end }}
-    <p class="p-hero-lede">{{ $p.lede | default site.Params.description }}</p>
+    {{- /* Optional. The landing page carries the bio in content/_index.md
+           directly below this, so a lede here would say it twice. Set
+           params.hero.lede only if the hero ever stands alone again. */ -}}
+    {{- with $p.lede }}
+      <p class="p-hero-lede">{{ . }}</p>
+    {{- end }}
     <div class="p-hero-actions">
       {{- range $p.actions }}
         <a class="p-btn {{ if .primary }}p-btn-primary{{ else }}p-btn-ghost{{ end }}"

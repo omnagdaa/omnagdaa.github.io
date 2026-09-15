@@ -8,6 +8,7 @@
     {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
     <main id="content" class="p-home hx:w-full hx:min-w-0 hx:break-words">
       {{ partial "portfolio/hero.html" . }}
+      {{ partial "portfolio/about.html" . }}
       {{ partial "portfolio/projects.html" . }}
       {{ partial "portfolio/stack.html" . }}
       {{ partial "portfolio/writeups.html" . }}

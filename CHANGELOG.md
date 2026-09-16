@@ -2,6 +2,23 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-16 — Navbar on-palette, GitHub icon removed
+
+### Changed
+
+- **The navbar follows the design tokens.** Hextra styles the bar's contents
+  with its own grey ramp — `hx:text-gray-600` on links, `hx:bg-black/[.05]` on
+  the search field — so it kept the theme's palette while everything around it
+  moved. Links, the active state, the search input, its placeholder, the
+  shortcut chip and the results panel are all repainted.
+
+  The current page is marked by Hextra with `hx:font-medium` and no colour
+  class, and there is no `aria-current`, so that is the only hook for an active
+  link. It now reads as accent plus an underline.
+
+- **GitHub icon removed from the navbar.** It pointed at the same URL as the
+  hero's contact rail, one row below it on the landing page.
+
 ## 2026-09-16 — Boxed listings on the section index pages
 
 ### Changed

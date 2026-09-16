@@ -49,11 +49,6 @@ menu:
       weight: 5
       params:
         type: search
-    - name: GitHub
-      weight: 6
-      url: https://github.com/omnagdaa
-      params:
-        icon: github
     - name: Background motion
       weight: 7
       params:

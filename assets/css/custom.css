@@ -1599,3 +1599,64 @@ nav.hextra-pager a:hover {
 .p-box a.p-card:focus-visible .p-card-title {
   color: var(--p-accent);
 }
+
+/* --------------------------------------------------------------------------
+   Navbar colour scheme
+
+   Hextra styles the bar's contents with its own grey ramp — hx:text-gray-600,
+   hx:bg-black/[.05] on the search field — so the bar kept the theme's palette
+   while everything around it moved to the tokens. These repaint it.
+
+   Hextra marks the current page with `hx:font-medium` and simply omits the
+   colour class, so that is the only hook for an active link. Re-check on a
+   theme upgrade.
+   -------------------------------------------------------------------------- */
+
+.hextra-nav-container nav a {
+  color: var(--p-text-muted);
+  transition: color 140ms;
+}
+
+.hextra-nav-container nav a:hover {
+  color: var(--p-accent);
+}
+
+.hextra-nav-container nav a.hx\:font-medium {
+  color: var(--p-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/* --- Search field -------------------------------------------------------- */
+
+.hextra-search-input {
+  background-color: var(--p-bg-subtle);
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius-sm);
+  color: var(--p-text);
+}
+
+.hextra-search-input::placeholder {
+  color: var(--p-text-faint);
+}
+
+.hextra-search-input:focus-visible {
+  background-color: var(--p-surface);
+  border-color: var(--p-accent-border);
+  outline-color: var(--p-accent);
+}
+
+.hextra-search-wrapper kbd {
+  background-color: var(--p-surface);
+  border: 1px solid var(--p-border);
+  color: var(--p-text-faint);
+}
+
+/* The results panel is a floating surface, so it keeps an edge — but it takes
+   it from the tokens rather than Hextra's grey. */
+.hextra-search-results {
+  background-color: var(--p-surface);
+  border: 1px solid var(--p-border-strong);
+  color: var(--p-text);
+}

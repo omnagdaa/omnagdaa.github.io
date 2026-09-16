@@ -126,3 +126,24 @@ obvious:
   dark enough at the same alpha to push faint text under the contrast floor,
   and a field of red glyphs reads as an alarm. See `docs/ascii-background.md`
   for the numbers.
+
+## Navbar colour scheme
+
+Hextra styles the bar's contents with its own grey ramp — `hx:text-gray-600`
+on menu links, `hx:bg-black/[.05]` on the search field — so the bar kept the
+theme's palette while everything around it moved to the tokens. `custom.css`
+repaints the links, the search input, its placeholder, the shortcut chip and
+the results panel.
+
+Two hooks worth knowing, both of which can move on a theme upgrade:
+
+- The **current page** link is marked only by `hx:font-medium`, with the colour
+  class simply omitted. There is no `aria-current`, so that class is the only
+  selector available for an active state.
+- The search field is `.hextra-search-input` inside `.hextra-search-wrapper`.
+
+Tailwind's dark variant compiles to `:where(.dark, .dark *)` and contributes no
+specificity, so a two-class selector wins in both themes without `!important`.
+
+The GitHub icon was removed from `menu.main`. It pointed at the same URL as the
+hero's contact rail, which is where a visitor actually looks for it.

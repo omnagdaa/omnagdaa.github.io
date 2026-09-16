@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Om Nagda – Notes</title><link>https://omnagdaa.github.io/docs/</link><description>Recent content in Notes on Om Nagda</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><managingEditor>omnagdaa@proton.me (Om Nagda)</managingEditor><webMaster>omnagdaa@proton.me (Om Nagda)</webMaster><atom:link href="https://omnagdaa.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>DumpScope</title><link>https://omnagdaa.github.io/projects/dumpscope/</link><pubDate>Sun, 16 Aug 2026 00:00:00 +0000</pubDate><author>omnagdaa@proton.me (Om Nagda)</author><guid>https://omnagdaa.github.io/projects/dumpscope/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Om Nagda — Security Engineer &amp; DevOps – Notes</title><link>https://omnagdaa.github.io/docs/</link><description>Recent content in Notes on Om Nagda — Security Engineer &amp; DevOps</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><managingEditor>omnagdaa@proton.me (Om Nagda)</managingEditor><webMaster>omnagdaa@proton.me (Om Nagda)</webMaster><atom:link href="https://omnagdaa.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>DumpScope</title><link>https://omnagdaa.github.io/projects/dumpscope/</link><pubDate>Sun, 16 Aug 2026 00:00:00 +0000</pubDate><author>omnagdaa@proton.me (Om Nagda)</author><guid>https://omnagdaa.github.io/projects/dumpscope/</guid><description>
 &lt;p&gt;DumpScope is a memory forensics desktop application built with Python, PyQt6, and
 Volatility3 — designed to streamline memory dump analysis with a wizard-driven UI
 instead of raw CLI commands.&lt;/p&gt;
@@ -32,7 +32,65 @@ Your browser does not support embedded video.
 &lt;a href="#architecture-notes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threading lock serializes Volatility3 subprocess calls and handles corrupted symbol
 caches. The QThread worker + signal-based communication pattern built here got reused
 across later tools.&lt;/p&gt;</description></item><item><title>Memory Forensics</title><link>https://omnagdaa.github.io/docs/memory-forensics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>omnagdaa@proton.me (Om Nagda)</author><guid>https://omnagdaa.github.io/docs/memory-forensics/</guid><description>
-&lt;p&gt;Notes on acquiring and analyzing memory images with Volatility3.&lt;/p&gt;
-&lt;!-- TODO: this page was a title-only stub on the live site. Fill in. --&gt;</description></item><item><title>Mobile Security</title><link>https://omnagdaa.github.io/docs/mobile-security/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>omnagdaa@proton.me (Om Nagda)</author><guid>https://omnagdaa.github.io/docs/mobile-security/</guid><description>
-&lt;p&gt;Notes on Android and iOS application security testing.&lt;/p&gt;
-&lt;!-- TODO: this page was a title-only stub on the live site. Fill in. --&gt;</description></item></channel></rss>
+&lt;p&gt;Working notes on memory image acquisition and analysis. This is the reference I
+keep coming back to, written down so I stop re-deriving it.&lt;/p&gt;
+&lt;!-- TODO(om): This page is an outline. The headings below are the shape the
+note should take — fill each one with what you actually do, and delete
+any that do not apply to your workflow. --&gt;
+&lt;h2&gt;Acquisition&lt;span class="hx:absolute hx:-mt-20" id="acquisition"&gt;&lt;/span&gt;
+&lt;a href="#acquisition" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;How the image was captured constrains everything downstream, so it belongs at
+the top of any writeup.&lt;/p&gt;
+&lt;!-- TODO(om): cover the tools you use per platform (e.g. WinPmem, AVML, LiME),
+and the one thing that most often goes wrong. --&gt;
+&lt;h2&gt;Establishing the profile&lt;span class="hx:absolute hx:-mt-20" id="establishing-the-profile"&gt;&lt;/span&gt;
+&lt;a href="#establishing-the-profile" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Volatility3 resolves symbols automatically rather than using Volatility2-style
+profiles, which removes the single most common source of &amp;ldquo;it just doesn&amp;rsquo;t
+work&amp;rdquo;.&lt;/p&gt;
+&lt;!-- TODO(om): note where the symbol cache lives, and what to do when it is
+corrupted — this is the failure DumpScope has a threading lock for, so
+it is worth writing down. --&gt;
+&lt;h2&gt;Plugin order&lt;span class="hx:absolute hx:-mt-20" id="plugin-order"&gt;&lt;/span&gt;
+&lt;a href="#plugin-order" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There is a rough triage sequence that answers &amp;ldquo;what was this machine doing&amp;rdquo;
+faster than picking plugins ad hoc.&lt;/p&gt;
+&lt;!-- TODO(om): your actual order. Something like:
+1. `windows.info` — confirm the image parses and identify the build
+2. `windows.pslist` / `windows.psscan` — processes, including unlinked
+3. `windows.netscan` — network endpoints
+4. `windows.cmdline` — how each process was invoked
+5. `windows.malfind` — injected regions
+Each with a sentence on what you are looking for, not just what it does. --&gt;
+&lt;h2&gt;Extracting artefacts&lt;span class="hx:absolute hx:-mt-20" id="extracting-artefacts"&gt;&lt;/span&gt;
+&lt;a href="#extracting-artefacts" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;!-- TODO(om): process dumping, file recovery, registry hives. --&gt;
+&lt;h2&gt;Failure modes&lt;span class="hx:absolute hx:-mt-20" id="failure-modes"&gt;&lt;/span&gt;
+&lt;a href="#failure-modes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;!-- TODO(om): the ones that cost you time. Smeared images from a live
+acquisition, version mismatches, symbol download failures offline. --&gt;
+&lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://volatility3.readthedocs.io/"target="_blank" rel="noopener"&gt;Volatility3 documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Mobile Security</title><link>https://omnagdaa.github.io/docs/mobile-security/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>omnagdaa@proton.me (Om Nagda)</author><guid>https://omnagdaa.github.io/docs/mobile-security/</guid><description>
+&lt;p&gt;Working notes on mobile application security testing, across both platforms.&lt;/p&gt;
+&lt;!-- TODO(om): This page is an outline. Fill each heading with your actual
+process and delete what you do not use. --&gt;
+&lt;h2&gt;Test environment&lt;span class="hx:absolute hx:-mt-20" id="test-environment"&gt;&lt;/span&gt;
+&lt;a href="#test-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The setup cost is most of the work, and it is the part worth writing down
+because it is the part you forget between engagements.&lt;/p&gt;
+&lt;!-- TODO(om): emulator vs. physical device, rooting/jailbreak approach, and
+how you pin a reproducible environment. --&gt;
+&lt;h2&gt;Static analysis&lt;span class="hx:absolute hx:-mt-20" id="static-analysis"&gt;&lt;/span&gt;
+&lt;a href="#static-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;!-- TODO(om): unpacking an APK/IPA, what you grep for first, the tools
+(jadx, apktool, Ghidra for native libs), and where hardcoded material
+tends to hide. --&gt;
+&lt;h2&gt;Dynamic analysis&lt;span class="hx:absolute hx:-mt-20" id="dynamic-analysis"&gt;&lt;/span&gt;
+&lt;a href="#dynamic-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;!-- TODO(om): Frida workflow — the hooks you reach for repeatedly are worth
+pasting in full here, since that is the thing you actually reuse. --&gt;
+&lt;h2&gt;Traffic interception&lt;span class="hx:absolute hx:-mt-20" id="traffic-interception"&gt;&lt;/span&gt;
+&lt;a href="#traffic-interception" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;!-- TODO(om): proxy setup, installing a CA that the OS will trust, and
+defeating certificate pinning. Note the Android 7+ user-CA behaviour —
+it is the thing that trips people up most. --&gt;
+&lt;h2&gt;Common findings&lt;span class="hx:absolute hx:-mt-20" id="common-findings"&gt;&lt;/span&gt;
+&lt;a href="#common-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;!-- TODO(om): the issues that turn up repeatedly — insecure storage, weak
+cryptography, exported components, webview misconfiguration. --&gt;
+&lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://mas.owasp.org/MASTG/"target="_blank" rel="noopener"&gt;OWASP Mobile Application Security Testing Guide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

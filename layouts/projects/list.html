@@ -13,7 +13,7 @@
         {{- with $projects }}
           <div class="p-box p-box-page">
             <h2 class="p-box-title">{{ len . }} {{ cond (eq (len .) 1) "PROJECT" "PROJECTS" }}</h2>
-          <div class="p-grid">
+          <div class="p-rows p-rows-flush">
             {{- range . }}
               {{ partial "portfolio/project-card.html" . }}
             {{- end }}

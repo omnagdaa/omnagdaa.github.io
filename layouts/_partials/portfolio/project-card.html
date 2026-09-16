@@ -1,12 +1,28 @@
-<a class="p-card" href="{{ .RelPermalink }}">
-  <h3 class="p-card-title">{{ .Title }}</h3>
-  <p class="p-card-desc">{{ .Params.summary | default .Summary | plainify }}</p>
-  <div class="p-card-foot">
-    {{- with .Params.status }}
-      <span class="p-status {{ if eq . "Archived" }}p-status-archived{{ end }}">{{ . }}</span>
-    {{- end }}
-    {{- range first 3 .Params.tech }}
-      <span class="p-tag">{{ . }}</span>
-    {{- end }}
-  </div>
+{{- /* A project entry.
+
+       Structurally identical to a writeup or note row, because it sits in the
+       same kind of box beside them and used to be a different component
+       entirely — heavier title, looser description, and a foot pushed down by
+       `margin-top: auto`, so the three listings never lined up.
+
+       The extra it carries over a plain row: status on the right where a
+       writeup puts its date, and the tech stack on its own line. */ -}}
+<a class="p-row" href="{{ .RelPermalink }}">
+  <span class="p-row-title">{{ .Title }}</span>
+
+  {{- with .Params.status }}
+    <span class="p-row-meta">
+      <span class="p-status{{ if eq . "Archived" }} p-status-archived{{ end }}">{{ . }}</span>
+    </span>
+  {{- end }}
+
+  {{- with .Params.summary | default .Summary }}
+    <span class="p-row-desc">{{ . | plainify }}</span>
+  {{- end }}
+
+  {{- with .Params.tech }}
+    <span class="p-row-tags">
+      {{- range first 4 . }}<span class="p-tag">{{ . }}</span>{{ end }}
+    </span>
+  {{- end }}
 </a>

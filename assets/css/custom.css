@@ -370,92 +370,6 @@ samp {
 
    The 26rem cap stops that collapse going too far the other way — without it
    a single card stretches the full 72rem and the measure falls apart. */
-.p-grid {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 26rem));
-  justify-content: start;
-}
-
-.p-card {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  padding: 1.5rem;
-  background-color: var(--p-surface);
-  border: 1px solid var(--p-border);
-  border-radius: var(--p-radius);
-  text-decoration: none;
-  transition-property: border-color, background-color;
-  transition-duration: 180ms;
-}
-
-a.p-card {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-/* Accent rule that grows across the card top on hover/focus. */
-a.p-card::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 2px;
-  background-color: var(--p-accent);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 220ms ease-out;
-}
-
-/* The lift and the drop shadow went with the rest of the float. A sheet on
-   paper announces itself by edge and tone, so hover moves both. */
-a.p-card:hover,
-a.p-card:focus-visible {
-  border-color: var(--p-accent-border);
-  background-color: var(--p-bg);
-}
-
-a.p-card:hover::after,
-a.p-card:focus-visible::after {
-  transform: scaleX(1);
-}
-
-.p-card-title {
-  font-size: 1.0625rem;
-  font-weight: 650;
-  letter-spacing: -0.015em;
-  color: var(--p-text);
-  margin: 0 0 0.5rem;
-  text-wrap: balance;
-}
-
-a.p-card:hover .p-card-title {
-  color: var(--p-accent);
-}
-
-.p-card-desc {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--p-text-muted);
-  margin: 0;
-  overflow-wrap: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.p-card-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: auto;
-  padding-top: 1.25rem;
-}
 
 /* --------------------------------------------------------------------------
    Tags / chips
@@ -1026,7 +940,6 @@ nav.hextra-pager a:hover {
    -------------------------------------------------------------------------- */
 
 .p-btn:focus-visible,
-.p-card:focus-visible,
 .p-row:focus-visible,
 .p-link-more:focus-visible {
   outline: 2px solid var(--p-accent);
@@ -1034,17 +947,8 @@ nav.hextra-pager a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .p-card,
   .p-btn,
   .p-row {
-    transition: none;
-  }
-
-  a.p-card:hover {
-    transform: none;
-  }
-
-  a.p-card::after {
     transition: none;
   }
 }
@@ -1364,7 +1268,6 @@ nav.hextra-pager a:hover {
   color: var(--p-text-muted);
 }
 
-
 /* Byline tag pills live inside `.content`, and `.content a` underlines every
    link in prose. A pill is a control, not prose, so it opts out — and it has
    to out-specify `.content a` to do it. */
@@ -1411,7 +1314,6 @@ nav.hextra-pager a:hover {
   white-space: nowrap;
   border: 0;
 }
-
 
 /* --------------------------------------------------------------------------
    Boxed sections
@@ -1574,35 +1476,8 @@ nav.hextra-pager a:hover {
    cards become ruled entries stacked in one column, like every other listing.
    -------------------------------------------------------------------------- */
 
-.p-box .p-grid {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
-}
-
-.p-box .p-card {
-  padding: 1.15rem 0;
-  background-color: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--p-border);
-  border-radius: 0;
-}
-
-.p-box .p-grid > :last-child .p-card,
-.p-box .p-card:last-child {
-  border-bottom: 0;
-}
-
 /* Hover moves the title and the accent rule, not a fill — there is no card
    surface left to tint. */
-.p-box a.p-card:hover,
-.p-box a.p-card:focus-visible {
-  background-color: transparent;
-}
-
-.p-box a.p-card:hover .p-card-title,
-.p-box a.p-card:focus-visible .p-card-title {
-  color: var(--p-accent);
-}
 
 /* --------------------------------------------------------------------------
    Navbar colour scheme
@@ -1663,4 +1538,14 @@ nav.hextra-pager a:hover {
   background-color: var(--p-surface);
   border: 1px solid var(--p-border-strong);
   color: var(--p-text);
+}
+
+/* The tech stack on a project row. Full-width like the description, so it
+   wraps onto its own line rather than competing with the title. */
+.p-row-tags {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
 }

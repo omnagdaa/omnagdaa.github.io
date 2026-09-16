@@ -2,6 +2,24 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-16 — Projects use the same row as writeups and notes
+
+### Changed
+
+- **Project entries are rows now, not cards.** They sat in the same kind of box
+  as writeups and notes but were built from a different component, so nothing
+  lined up: a `1.0625rem/650` title against the rows' `1rem/550`, a larger
+  description, and a foot pushed to the bottom by `margin-top: auto` plus
+  `1.25rem` of padding.
+
+  A project row carries two things a plain row does not: status on the right,
+  where a writeup puts its date, and the tech stack on its own line.
+
+- **The card component is gone**, along with `.p-grid`. Projects were its only
+  consumer, so roughly 100 lines of CSS went with it — `.p-card`, its title,
+  description and foot, the hover and accent-rule states, the grid, and the
+  box-scoped overrides that existed to flatten cards inside a box.
+
 ## 2026-09-16 — Mozilla Text restored as the reading face
 
 ### Changed

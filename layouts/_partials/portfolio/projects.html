@@ -3,17 +3,17 @@
 {{- with $projects }}
 <section class="p-section" aria-labelledby="projects-title">
   <div class="p-wrap">
-    <div class="p-section-head">
-      <h2 class="p-section-title" id="projects-title">Things I&rsquo;ve Built</h2>
-    </div>
+    <div class="p-box">
+      <h2 class="p-box-title" id="projects-title">WORK</h2>
 
-    <div class="p-grid">
-      {{- range . }}
-        {{ partial "portfolio/project-card.html" . }}
-      {{- end }}
-    </div>
+      <div class="p-grid">
+        {{- range . }}
+          {{ partial "portfolio/project-card.html" . }}
+        {{- end }}
+      </div>
 
-    <p class="p-section-foot"><a class="p-link-more" href="{{ "projects/" | relURL }}">All projects</a></p>
+      <p class="p-section-foot"><a class="p-link-more" href="{{ "projects/" | relURL }}">All projects</a></p>
+    </div>
   </div>
 </section>
 {{- end }}

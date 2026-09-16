@@ -87,3 +87,42 @@ appends `hextra-sidebar-active-item` to the `<a>` itself.
 
 Inset box-shadows are clipped by `border-radius`, so the 2px accent bar on an
 active item bows into a bracket unless the leading corners are squared.
+
+## Sticky rail footers
+
+The table of contents and the sidebar each end in a `position: sticky` block
+pinned to the bottom of the rail, carrying the scroll-to-top link. Hextra
+paints it with literal colours rather than variables:
+
+```
+hx:bg-white                     hx:dark:bg-dark
+hx:shadow-[0_-12px_16px_white]  hx:dark:shadow-[0_-12px_16px_#111]
+```
+
+On any page long enough to scroll it therefore appears bottom-right as a pale
+or near-black band with a 16px bleed of the same literal above it, and it does
+not change when the theme does. Project pages show it because
+`content/projects/_index.md` cascades `type: docs`, which gives them a TOC.
+
+`custom.css` repaints both from the tokens. The shadow keeps Hextra's geometry
+— it exists to fade the list out under the sticky block — but in the page
+colour. Tailwind's dark variant compiles to `:where(.dark, .dark *)`, which
+contributes no specificity, so a two-class selector wins in both themes.
+
+Re-check this on a Hextra upgrade: it depends on the `hx:sticky` class staying
+on that element.
+
+## Design tokens and the theme
+
+The palette, typography and the boxed-section treatment all live in
+`assets/css/custom.css` as `--p-*` tokens. Two constraints that are not
+obvious:
+
+- `--p-box-border` and `--p-box-shadow` are deliberately separate from
+  `--p-border`. The boxes use a heavy 2px rule in the text colour; ordinary
+  hairlines (table rules, the sidebar rail, row separators) must stay
+  hairlines, and would all turn near-black if they shared a token.
+- `--p-art` paints the ASCII field and is a neutral, never the accent. Red is
+  dark enough at the same alpha to push faint text under the contrast floor,
+  and a field of red glyphs reads as an alarm. See `docs/ascii-background.md`
+  for the numbers.

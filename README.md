@@ -52,6 +52,8 @@ Each line is one feature and where it lives.
 ### Look and feel
 
 - **Design-token system** — every colour, font, radius, and shadow is a `--p-*` custom property, so light and dark are one definition apart (`assets/css/custom.css`).
+- **Boxed sections** — each landing-page section is a ruled box with its title straddling the top border, like a fieldset legend, over a flat offset shadow with no blur.
+- **Paper ground and red highlight** — a warm paper stock with a single red accent for links, active states and selection; no gradients or blur anywhere.
 - **One-click light/dark** — replaces Hextra's three-item dropdown, sharing its storage key so the two can't desync (`assets/js/theme-switch.js`).
 - **ASCII hero field** — an animated field derived from a screen recording at build time, shipped as ~2 KB of JSON rather than video. Landing page only; reading pages stay clean (`tools/ascii-bg.py`, `assets/js/ascii-bg.js`).
 - **Motion pause control** — the backdrop autoplays, so WCAG 2.2.2 requires a way to stop it; the navbar button is it, and the choice persists.

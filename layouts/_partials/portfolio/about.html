@@ -6,8 +6,10 @@
 {{- with .Content }}
 <section class="p-section" id="about" aria-labelledby="about-title">
   <div class="p-wrap">
-    <h2 class="p-section-title p-visually-hidden" id="about-title">About</h2>
-    <div class="content p-prose">{{ . }}</div>
+    <div class="p-box">
+      <h2 class="p-box-title" id="about-title">ABOUT</h2>
+      <div class="content p-prose">{{ . }}</div>
+    </div>
   </div>
 </section>
 {{- end }}

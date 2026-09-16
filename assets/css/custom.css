@@ -12,36 +12,42 @@
   /* Paper, not white. Cool and faintly green so it sits with the teal —
      deliberately not a warm cream. The surface is the sheet that lies ON the
      paper, which is what separates a card now that nothing casts a shadow. */
-  --p-bg: #f7f8f6;
-  --p-bg-subtle: #edefeb;
-  --p-surface: #fdfdfc;
-  --p-border: #dcdfd8;
-  --p-border-strong: #b6bcb2;
-  --p-text: #10161c;
-  --p-text-muted: #55606b;
-  /* Contrast floor under the ASCII field — see docs/ascii-background.md. */
-  --p-text-faint: #626c77;
+  --p-bg: #f8f7f3;
+  --p-bg-subtle: #efeee8;
+  --p-surface: #fdfdfb;
+  --p-border: #e0ded5;
+  --p-border-strong: #b5b2a7;
+  --p-text: #191919;
+  --p-text-muted: #5f5f5a;
+  /* Darkened from #626c77. The paper ground costs contrast headroom that pure
+     white gave for free, and the ASCII field eats more — see the table in
+     docs/ascii-background.md. */
+  --p-text-faint: #5b646d;
 
-  --p-accent: #0d7d74;
-  --p-accent-hover: #0a625b;
-  --p-accent-bg: #e6f4f2;
-  --p-accent-border: #9dcdc7;
+  --p-accent: #b32218;
+  --p-accent-hover: #8f1a12;
+  --p-accent-bg: #fbeceb;
+  --p-accent-border: #e0a8a2;
+
+  /* The boxed sections. A heavy rule and a flat offset, kept apart from
+     --p-border so ordinary hairlines (table rules, sidebar rails, row
+     separators) stay hairlines rather than turning near-black with it. */
+  --p-box-border: #191919;
+  --p-box-shadow: #c9c6bb;
+
+  /* The ASCII field paints in this, not the accent. A field of red glyphs
+     reads as an alarm, and red is dark enough at the same alpha to push the
+     faint text under the contrast floor. Red is for highlighting. */
+  --p-art: #9a9a92;
 
   --p-warn: #9a5c00;
   --p-warn-bg: #fdf3e2;
 
   /* Google Fonts loaded in layouts/_partials/custom/head-end.html.
      Fallback stacks are metric-similar to limit shift if they fail. */
-  /* TESTING Mozilla Text (variable 200-700). To revert, swap the two
-     --p-sans lines below and drop Mozilla+Text from the Google Fonts href in
-     head-end.html.
-     Caveat: it ships no true italic, so `<em>` renders as a synthesised
-     oblique — worth checking in a writeup with emphasis in it. */
-  --p-sans: "Mozilla Text", ui-sans-serif, system-ui, -apple-system,
+  --p-sans: "Google Sans Flex", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /* --p-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
-  --p-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+  --p-mono: "Google Sans Code", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, "Liberation Mono", monospace;
 
   /* The ASCII backdrop is deliberately NOT --p-mono. Its geometry is baked in
@@ -50,6 +56,9 @@
      different metrics shears the art. Keep this pinned when testing fonts. */
   --p-mono-art: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, "Liberation Mono", monospace;
+  /* Deliberately NOT --p-mono. Google Sans Code has different metrics, and
+     tools/ascii-bg.py bakes CHAR_ASPECT = 0.5 into the art at generation
+     time, so a face with a different advance ratio shears it. */
 
   --p-radius: 10px;
   --p-radius-sm: 6px;
@@ -58,20 +67,25 @@
 }
 
 .dark {
-  --p-bg: #0b0f14;
-  --p-bg-subtle: #111820;
-  --p-surface: #121a22;
-  --p-border: #223040;
-  --p-border-strong: #33465c;
-  --p-text: #e6edf3;
-  --p-text-muted: #9bacbf;
-  /* Contrast floor under the ASCII field — see docs/ascii-background.md. */
-  --p-text-faint: #7b8b99;
+  --p-bg: #161615;
+  --p-bg-subtle: #1e1e1c;
+  --p-surface: #1c1c1a;
+  --p-border: #333330;
+  --p-border-strong: #4d4d48;
+  --p-text: #eeeeea;
+  --p-text-muted: #aaa9a2;
+  /* Lightened from #7b8b99 for the same headroom reason as light. */
+  --p-text-faint: #8695a2;
 
-  --p-accent: #3ddbc7;
-  --p-accent-hover: #6ae8d8;
-  --p-accent-bg: #0e2a28;
-  --p-accent-border: #1d5852;
+  --p-accent: #ff7b72;
+  --p-accent-hover: #ff9d96;
+  --p-accent-bg: #2a1614;
+  --p-accent-border: #6b2f2a;
+
+  --p-box-border: #eeeeea;
+  --p-box-shadow: #45453f;
+
+  --p-art: #7f8a84;
 
   --p-warn: #f0b429;
   --p-warn-bg: #2a2109;
@@ -144,21 +158,20 @@ samp {
    Layout primitives
    -------------------------------------------------------------------------- */
 
+/* 72rem was sized for a full-bleed card grid. The boxed sections are a
+   reading layout, and at that width the prose sat in a 42rem measure inside a
+   72rem box with a third of it empty. 52rem puts the box edge close to the
+   text and still fits two project cards per row. */
 .p-wrap {
   width: 100%;
-  max-width: 72rem;
+  max-width: 52rem;
   margin-inline: auto;
   padding-inline: max(env(safe-area-inset-left), 1.5rem)
     max(env(safe-area-inset-right), 1.5rem);
 }
 
 .p-section {
-  padding-block: clamp(3rem, 7vw, 5.5rem);
-  border-top: 1px solid var(--p-border);
-}
-
-.p-section:first-of-type {
-  border-top: 0;
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .p-section-head {
@@ -692,7 +705,7 @@ a.p-card:hover .p-card-title {
   font-size: max(1.667vw, 2.1vh);
   line-height: 1.25;
   white-space: pre;
-  color: var(--p-accent);
+  color: var(--p-art);
 
   /* Masked out from behind the text and faded before the sections below.
      Two consequences, and both are the point: the art stops competing with
@@ -1045,7 +1058,10 @@ nav.hextra-pager a:hover {
    ------------------------------------------------------------------------ */
 .hextra-nav-container {
   top: 0.625rem;
-  width: min(100% - 1.25rem, var(--p-nav-width, 76rem));
+  /* Wider than .p-wrap on purpose: the bar carries a logo, four links, the
+     search field and three icon buttons, which do not compress to 52rem
+     without the search box collapsing. */
+  width: min(100% - 1.25rem, var(--p-nav-width, 60rem));
   margin-inline: auto;
 }
 
@@ -1374,7 +1390,7 @@ nav.hextra-pager a:hover {
    a measure for prose. This is the only block of running text on the landing
    page, so it gets a reading width of its own. */
 .p-prose {
-  max-width: 42rem;
+  max-width: 44rem;
 }
 
 /* The bio needs a heading for the section's accessible name and for anyone
@@ -1390,4 +1406,123 @@ nav.hextra-pager a:hover {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Boxed sections
+
+   Each landing-page section is a ruled box with its title straddling the top
+   border, the way a fieldset carries a legend. Two things make it read as
+   print rather than as a UI card: the border is a heavy 2px rule in the text
+   colour, not a hairline in a grey; and the drop is a hard offset with zero
+   blur, so it behaves like a second sheet under the first rather than a glow.
+
+   --p-box-border and --p-box-shadow are separate from --p-border on purpose.
+   Ordinary hairlines — table rules, the sidebar rail, row separators — must
+   stay hairlines; if they inherited this border they would all turn
+   near-black.
+   -------------------------------------------------------------------------- */
+
+.p-box {
+  position: relative;
+  padding: 2.25rem 1.5rem 1.75rem;
+  background-color: var(--p-surface);
+  border: 2px solid var(--p-box-border);
+  box-shadow: 5px 5px 0 var(--p-box-shadow);
+}
+
+/* The legend needs the box's own background behind it, because what makes it
+   sit *on* the rule is that it paints over it. */
+.p-box-title {
+  position: absolute;
+  top: 0;
+  left: 1.25rem;
+  transform: translateY(-55%);
+  margin: 0;
+  padding-inline: 0.4rem;
+  background-color: var(--p-surface);
+  color: var(--p-text-muted);
+  font-family: var(--p-sans);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+/* The offset needs somewhere to land, or it clips at the viewport edge. */
+.p-home .p-wrap {
+  padding-right: max(env(safe-area-inset-right), 1.5rem + 5px);
+}
+
+@media (max-width: 40rem) {
+  .p-box {
+    padding: 2rem 1.1rem 1.4rem;
+    box-shadow: 4px 4px 0 var(--p-box-shadow);
+  }
+
+  .p-box-title {
+    left: 0.9rem;
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Terminal caret and selection
+   -------------------------------------------------------------------------- */
+
+/* The prompt reads as a live shell rather than a picture of one. It is the
+   only unprompted motion on the page, it is two characters wide, and it stops
+   under reduced motion. */
+.p-caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 0.1em;
+  vertical-align: -0.12em;
+  background-color: var(--p-accent);
+  animation: p-blink 1.1s steps(1) infinite;
+}
+
+@keyframes p-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-caret { animation: none; }
+}
+
+/* Selection picks up the accent — the one place red appears without being
+   asked for, and it only appears when someone is actually selecting text. */
+::selection {
+  background-color: var(--p-accent);
+  color: var(--p-bg);
+}
+
+/* --------------------------------------------------------------------------
+   Hextra's sticky rail footers
+
+   The table of contents and the sidebar each end in a `position: sticky`
+   block pinned to the bottom of the rail — it carries the scroll-to-top link.
+   Hextra paints it with literal colours rather than variables:
+
+     hx:bg-white  hx:dark:bg-dark
+     hx:shadow-[0_-12px_16px_white]  hx:dark:shadow-[0_-12px_16px_#111]
+
+   So on any page long enough to scroll it appears bottom-right as a pale or
+   near-black band, with a 16px bleed of that same literal above it, and it
+   does not change when the theme does. Project pages show it because
+   content/projects/_index.md cascades `type: docs`, which gives them a TOC.
+
+   Both are repainted from the tokens. The shadow keeps Hextra's geometry —
+   it exists to fade the list out under the sticky block — but in the page
+   colour, so it reads as the page rather than as a grey slab.
+
+   Specificity note: Tailwind's dark variant compiles to :where(.dark, .dark *),
+   which contributes nothing, so a two-class selector wins in both themes. */
+.hextra-toc .hx\:sticky,
+.hextra-sidebar-container .hx\:sticky {
+  background-color: var(--p-bg);
+  box-shadow: 0 -12px 16px var(--p-bg);
+  border-color: var(--p-border);
 }

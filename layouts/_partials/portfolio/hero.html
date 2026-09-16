@@ -3,7 +3,7 @@
   <div class="p-wrap">
     <p class="p-hero-prompt">
       <span class="p-sigil" aria-hidden="true">$</span>
-      <span>{{ $p.prompt | default "whoami" }}</span>
+      <span>{{ $p.prompt | default "whoami" }}</span><span class="p-caret" aria-hidden="true"></span>
     </p>
     <h1 class="p-hero-title" id="hero-title">{{ $p.title | default site.Title }}</h1>
     {{- with $p.role }}

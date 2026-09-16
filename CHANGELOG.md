@@ -2,6 +2,53 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-16 — Boxed sections, red highlight, and the real scroll-to-top bug
+
+### Fixed
+
+- **The black band on the right when scrolling — found properly this time.**
+  It is Hextra's sticky rail footer, the block carrying the scroll-to-top
+  link at the bottom of the table of contents. It is painted with literals
+  rather than variables (`hx:bg-white` / `hx:dark:bg-dark`, and a shadow of
+  `0 -12px 16px #111`), so it appears bottom-right as a pale or near-black
+  band that ignores the theme. Project pages show it because
+  `content/projects/_index.md` cascades `type: docs`, which gives them a TOC.
+
+  Both the TOC and the sidebar footers are now repainted from the tokens.
+
+  The earlier `color-scheme` / `<html>` background work was a real fix for the
+  overscroll canvas and the scrollbar, but it was **not** this bug.
+
+- **Dark box shadow was pure black** on a near-black ground, so the offset was
+  invisible. It is lighter than the page in dark now, not darker.
+
+### Changed
+
+- **Boxed sections.** Each landing-page section is a ruled box with its title
+  straddling the top border like a fieldset legend, over a flat offset shadow
+  with zero blur. `--p-box-border` and `--p-box-shadow` are kept separate from
+  `--p-border` so ordinary hairlines stay hairlines.
+
+- **Accent is red.** `#b32218` light (6.20:1 on paper), `#ff7b72` dark
+  (7.18:1). Links, active states, the primary button, the caret and text
+  selection.
+
+- **The ASCII field is neutral, not the accent.** Red at the same alpha is
+  dark enough to push faint text under the contrast floor, and a field of red
+  glyphs reads as an alarm. It has its own `--p-art` token.
+
+- **`--p-text-faint` recalibrated** in both themes. The paper ground costs the
+  contrast headroom pure white gave for free: light `#626c77` → `#5b646d`,
+  dark `#7b8b99` → `#8695a2`.
+
+- **Typography** is Google Sans Flex and Google Sans Code. `--p-mono-art` stays
+  pinned to JetBrains Mono — `tools/ascii-bg.py` bakes `CHAR_ASPECT = 0.5` into
+  the art, so a face with a different advance ratio shears it.
+
+- **Page narrowed to 52rem** from 72rem, with the navbar at 60rem. 72rem was
+  sized for a full-bleed card grid; the boxed sections are a reading layout,
+  and at that width the prose sat in a 42rem measure inside a 72rem box.
+
 ## 2026-09-15 — About becomes the landing page
 
 ### Changed

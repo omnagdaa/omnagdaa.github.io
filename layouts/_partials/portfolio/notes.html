@@ -7,22 +7,22 @@
 {{- with $notes }}
 <section class="p-section" aria-labelledby="notes-title">
   <div class="p-wrap">
-    <div class="p-section-head">
-      <h2 class="p-section-title" id="notes-title">Technical Notes</h2>
-    </div>
+    <div class="p-box">
+      <h2 class="p-box-title" id="notes-title">NOTES</h2>
 
-    <div class="p-rows">
-      {{- range . }}
-        <a class="p-row" href="{{ .RelPermalink }}">
-          <span class="p-row-title">{{ .Title }}</span>
-          {{- with partial "utils/page-description" . }}
-            <span class="p-row-desc">{{ . }}</span>
-          {{- end }}
-        </a>
-      {{- end }}
-    </div>
+      <div class="p-rows">
+        {{- range . }}
+          <a class="p-row" href="{{ .RelPermalink }}">
+            <span class="p-row-title">{{ .Title }}</span>
+            {{- with partial "utils/page-description" . }}
+              <span class="p-row-desc">{{ . }}</span>
+            {{- end }}
+          </a>
+        {{- end }}
+      </div>
 
-    <p class="p-section-foot"><a class="p-link-more" href="{{ "docs/" | relURL }}">All notes</a></p>
+      <p class="p-section-foot"><a class="p-link-more" href="{{ "docs/" | relURL }}">All notes</a></p>
+    </div>
   </div>
 </section>
 {{- end }}

@@ -45,7 +45,11 @@
 
   /* Google Fonts loaded in layouts/_partials/custom/head-end.html.
      Fallback stacks are metric-similar to limit shift if they fail. */
-  --p-sans: "Google Sans Flex", ui-sans-serif, system-ui, -apple-system,
+  /* Mozilla Text, variable 200-700, which is why the tokens below can ask for
+     450/550/650 — a static face would snap those to the nearest shipped
+     weight. One caveat worth knowing: it ships no true italic, so <em> renders
+     as a synthesised oblique. Worth a look in any writeup with emphasis. */
+  --p-sans: "Mozilla Text", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --p-mono: "Google Sans Code", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, "Liberation Mono", monospace;

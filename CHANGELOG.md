@@ -2,6 +2,22 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-16 — Mozilla Text restored as the reading face
+
+### Changed
+
+- **`--p-sans` is Mozilla Text again**, replacing Google Sans Flex. It is
+  variable 200-700, which is what lets the tokens ask for 450/550/650 — a
+  static face snaps those to the nearest shipped weight.
+
+  Caveat worth knowing: Mozilla Text ships no true italic, so `<em>` renders as
+  a synthesised oblique. Worth a look in any writeup with emphasis in it.
+
+- **The mono faces are unchanged.** `--p-mono` stays Google Sans Code for the
+  machine voice, and `--p-mono-art` stays pinned to JetBrains Mono — the ASCII
+  field's geometry is baked in at generation time by `tools/ascii-bg.py`
+  (`CHAR_ASPECT = 0.5`), so a face with a different advance ratio shears it.
+
 ## 2026-09-16 — SEO pass
 
 ### Fixed

@@ -1,8 +1,16 @@
 baseURL: https://omnagdaa.github.io/
 locale: en-us
 defaultContentLanguage: en
-title: Om Nagda
+# Also the home page's <title>. Hextra renders home as site.Title alone, so
+# this carries the role; every other page becomes "<Page> – <this>".
+title: Om Nagda — Security Engineer & DevOps
 enableRobotsTXT: true
+
+# Only tags. Hugo's default taxonomy set also includes `categories`, which
+# nothing here uses — it published an empty /categories/ page and put it in
+# the sitemap as thin content.
+taxonomies:
+  tag: tags
 enableGitInfo: true
 hasCJKLanguage: false
 

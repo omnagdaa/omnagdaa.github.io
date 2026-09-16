@@ -20,3 +20,39 @@ card. Regenerate with `./site ogcard` after changing the name or headline.
 
 `layouts/robots.txt` overrides Hugo's default purely to add the `Sitemap:`
 line — that is how search engines find the sitemap without manual submission.
+
+## What each page emits
+
+Hextra's own head covers the basics — title, description, canonical, Open
+Graph, Twitter card. `_partials/custom/head-end.html` adds what it leaves out:
+
+| | Where |
+| --- | --- |
+| `Person` JSON-LD | home only |
+| `BlogPosting` / `TechArticle` / `SoftwareSourceCode` JSON-LD | every regular page, by section |
+| `BreadcrumbList` JSON-LD | every page except home |
+| `article:published_time` / `modified_time` | regular pages with a date |
+| RSS autodiscovery `<link rel="alternate">` | anywhere Hugo emits a feed |
+
+All JSON-LD goes through `safeJS` for the reason above. Timestamps are
+normalised to UTC: a local offset renders its `+` as `&#43;` in the attribute,
+which is valid but leaves the two stamps in different formats.
+
+Structured data is emitted only for `.IsPage`. A section index has a date and
+it means nothing there, so dating one would be a claim about content that
+does not exist.
+
+## Titles
+
+Hextra renders the home `<title>` as `site.Title` alone and every other page
+as `<Page> – <site.Title>`. `site.Title` therefore carries the role, which is
+the only way the home page's title says what the site is about. Safe to do
+because the footer copyright is a hardcoded i18n string, the hero reads
+`params.hero.title`, and `navbar.displayTitle` is false — nothing else renders
+it. Keep the longest page titles under ~60 characters.
+
+## Taxonomies
+
+`taxonomies:` in `hugo.yaml` declares tags only. Hugo's default set also
+includes `categories`, which nothing here uses — it shipped an empty
+`/categories/` page and listed it in the sitemap as thin content.

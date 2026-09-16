@@ -2,6 +2,37 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-16 — SEO pass
+
+### Fixed
+
+- **`theme-color` was stale.** It still carried `#ffffff` / `#0b0f14` from
+  before the paper palette, so mobile browser chrome painted a colour the site
+  no longer uses.
+
+- **The home page `<title>` was just "Om Nagda".** Hextra renders home as
+  `site.Title` alone, so the most important title on the site said nothing
+  about the work — while `og:title` carried the full version. `site.Title` now
+  includes the role; every page title lands between 41 and 60 characters.
+
+- **`/categories/` shipped as an empty page** in the sitemap. Hugo creates the
+  taxonomy by default and nothing here uses it. `taxonomies:` now declares tags
+  only.
+
+### Added
+
+- **Structured data for content pages.** `BlogPosting` for writeups,
+  `TechArticle` for notes, `SoftwareSourceCode` for projects (carrying `tech`
+  as `programmingLanguage`), plus `BreadcrumbList` on every page but home. The
+  home page's `Person` block is unchanged. Every block was checked to parse.
+
+- **`article:published_time` and `article:modified_time`.** Hextra emitted
+  `article:section` and no timestamps. Normalised to UTC, and only on regular
+  pages — a section index has a date and it means nothing there.
+
+- **RSS autodiscovery.** Hugo was emitting the feeds and Hextra's head linked
+  none of them, so nothing could find one from the page.
+
 ## 2026-09-16 — Navbar on-palette, GitHub icon removed
 
 ### Changed

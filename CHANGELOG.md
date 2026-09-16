@@ -2,6 +2,31 @@
 
 Notable changes to the site. Newest first.
 
+## 2026-09-16 — Boxed listings on the section index pages
+
+### Changed
+
+- **Projects, Notes and Writeups now use the boxed treatment** their homepage
+  sections got, so the language is the same wherever a listing appears.
+
+  - **Writeups** gets one box per year, with the year as its legend. The year
+    is already the grouping the archive is built on, so it is the most useful
+    thing the legend can carry — no label or count needed.
+  - **Projects** and **Notes** each box their listing with a count as the
+    legend (`1 PROJECT`, `2 NOTES`). The `<h1>` already names the page, so
+    repeating it in the legend would say nothing; the count is the thing the
+    heading does not tell you.
+
+- **Cards flatten inside a box.** A bordered, rounded card inside a ruled box
+  is a box inside a box, and it is exactly the "everything is a card" habit
+  this design language avoids. Inside a box the card keeps its content and
+  loses its container: one column, ruled entries, hover moving the title and
+  the accent rule rather than a fill. This affects the homepage WORK section
+  as well as the projects index.
+
+- **Rows inside a box run flush.** `.p-rows` draws its own rule top and bottom,
+  which doubled against the box edge.
+
 ## 2026-09-16 — Boxed sections, red highlight, and the real scroll-to-top bug
 
 ### Fixed

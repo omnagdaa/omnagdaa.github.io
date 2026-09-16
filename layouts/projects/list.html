@@ -11,10 +11,13 @@
 
         {{- $projects := sort .RegularPagesRecursive "Params.weight" }}
         {{- with $projects }}
-          <div class="p-grid" style="margin-top:2rem">
+          <div class="p-box p-box-page">
+            <h2 class="p-box-title">{{ len . }} {{ cond (eq (len .) 1) "PROJECT" "PROJECTS" }}</h2>
+          <div class="p-grid">
             {{- range . }}
               {{ partial "portfolio/project-card.html" . }}
             {{- end }}
+          </div>
           </div>
         {{- else }}
           <p class="p-empty">No projects published yet.</p>

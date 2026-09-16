@@ -19,7 +19,9 @@
         </div>
 
         {{- with .Pages }}
-          <div class="p-rows" style="margin-top:2rem">
+          <div class="p-box p-box-page">
+            <h2 class="p-box-title">{{ len . }} {{ cond (eq (len .) 1) "NOTE" "NOTES" }}</h2>
+          <div class="p-rows p-rows-flush">
             {{- range sort . "Params.weight" }}
               <a class="p-row" href="{{ .RelPermalink }}">
                 <span class="p-row-title">{{ .Title }}</span>
@@ -28,6 +30,7 @@
                 {{- end }}
               </a>
             {{- end }}
+          </div>
           </div>
         {{- end }}
 

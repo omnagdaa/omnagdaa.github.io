@@ -29,9 +29,9 @@
           {{- end }}
 
           {{- range .GroupByDate "2006" }}
-            <section class="p-archive-year" aria-labelledby="year-{{ .Key }}">
-              <h2 class="p-archive-heading" id="year-{{ .Key }}">{{ .Key }}</h2>
-              <div class="p-rows">
+            <section class="p-box p-archive-year" aria-labelledby="year-{{ .Key }}">
+              <h2 class="p-box-title" id="year-{{ .Key }}">{{ .Key }}</h2>
+              <div class="p-rows p-rows-flush">
                 {{- range .Pages }}
                   <a class="p-row" href="{{ .RelPermalink }}">
                     <span class="p-row-title">{{ .Title }}</span>

@@ -1,0 +1,5 @@
+baseURL = 'https://omnagdaa.github.io/'
+languageCode = 'en-us'
+title = 'Om Nagda — Security Engineer & DevOps'
+theme = 'LoveIt'
+
